@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+.header-img {
+  width: 20vh;
+  height: 10vh;
+  overflow: hidden;
+}
+.header-img img {
+  width: 100%;
+  object-fit: contain;
+}
+.header-date {
+  color: var(--text-color);
+  font-size: larger;
+}

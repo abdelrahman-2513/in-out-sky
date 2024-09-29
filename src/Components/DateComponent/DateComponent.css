@@ -1,0 +1,10 @@
+.date-header {
+  font-size: xx-large;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  background: var(--color-bg-box);
+  border-radius: 0.5em;
+  padding: 5px;
+}

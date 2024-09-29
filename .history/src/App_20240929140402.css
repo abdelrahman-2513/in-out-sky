@@ -1,0 +1,18 @@
+:root {
+  --color-primary: #545454;
+  --text-color: #202124;
+  --text-color-secondry: #5f6368;
+
+  --color-bg: #f8fafd;
+  --color-bg-box: #f8fafd;
+  --color-card: white;
+  --color-soft: #f0f1f1;
+  --color-border: lightgray;
+  --color-shadow: #504f4f2e;
+  --color-search: #e9eef6;
+  --color-active: #c2e7ff;
+  --color-text-active: #1677ff;
+  --color-text-hover: #176691;
+  --color-red: rgba(245, 72, 72, 0.91);
+  --color-icon: #5f6368;
+}
