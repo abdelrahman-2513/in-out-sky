@@ -1,22 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 import "./ButtonComponents.css";
-import { takeAction } from "../../assets/API";
-import dayjs from "dayjs";
 
+// Define messages for both English and Arabic
 const nfcMsgs = {
   en: {
     "": "Welcome To Sky Culinaire NFC System. Please move your card.",
-    200: "Check-In Successful",
-    400: "Check-In Failed",
-    "200-out": "Check-Out Successful",
-    "400-out": "Check-Out Failed",
+    success: "Check-In Successful",
+    fail: "Check-In Failed",
+    "success-out": "Check-Out Successful",
+    "fail-out": "Check-Out Failed",
   },
   ar: {
     "": "مرحبًا بكم في نظام سكاي كولينير NFC، يرجى تحريك بطاقتك.",
-    200: "تسجيل الدخول ناجح",
-    400: "فشل تسجيل الدخول",
-    "200-out": "تسجيل الخروج ناجح",
-    "400-out": "فشل تسجيل الخروج",
+    success: "تسجيل الدخول ناجح",
+    fail: "فشل تسجيل الدخول",
+    "success-out": "تسجيل الخروج ناجح",
+    "fail-out": "فشل تسجيل الخروج",
   },
 };
 
@@ -34,63 +33,33 @@ function ButtonsComponent({ language }) {
     }
   }, [language]);
   const handleCheckIn = () => {
-    takeAction({
-      cardId: nfc,
-      date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      kind: "I",
-    })
-      .then((res) => {
-        setMessage("200");
+    setCheckIn(true);
+    setCheckOut(false);
+    setMessage("success");
 
-        setNfc("");
-        setTimeout(() => {
-          setCheckIn(false);
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      })
-      .catch((err) => {
-        setMessage("400");
-        setNfc("");
-        setTimeout(() => {
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      });
+    setNfc("");
+    setTimeout(() => {
+      setCheckIn(false);
+      setMessage("");
+      nfcRef.current.focus();
+      setCheckOut(false);
+    }, 2000);
   };
 
   const handleCheckOut = () => {
-    takeAction({
-      cardId: nfc,
-      date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dataTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      kind: "I",
-    })
-      .then((res) => {
-        console.log(res);
-        setMessage("200-out");
+    setCheckOut(true);
+    setCheckIn(false);
+    nfcRef.current.focus();
 
-        setNfc("");
-        setTimeout(() => {
-          setCheckIn(false);
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setMessage("400-out");
-        setNfc("");
-        setTimeout(() => {
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      });
+    setNfc("");
+    setMessage("fail-out");
+
+    setTimeout(() => {
+      setCheckIn(false);
+      setMessage("");
+
+      setCheckOut(false);
+    }, 1000);
   };
 
   const direction = language === "ar" ? "rtl" : "ltr";
@@ -115,7 +84,7 @@ function ButtonsComponent({ language }) {
 
       <div className="message">
         <div className="message-content">
-          <p className={message?.includes("400") ? "fail" : "success"}>
+          <p className={message?.includes("fail") ? "fail" : "success"}>
             {nfcMsgs[language][message]}
           </p>
           <img

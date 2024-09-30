@@ -37,7 +37,7 @@ function ButtonsComponent({ language }) {
     takeAction({
       cardId: nfc,
       date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      dataTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
       kind: "I",
     })
       .then((res) => {
@@ -70,7 +70,6 @@ function ButtonsComponent({ language }) {
       kind: "I",
     })
       .then((res) => {
-        console.log(res);
         setMessage("200-out");
 
         setNfc("");
@@ -82,7 +81,6 @@ function ButtonsComponent({ language }) {
         }, 2000);
       })
       .catch((err) => {
-        console.log(err);
         setMessage("400-out");
         setNfc("");
         setTimeout(() => {

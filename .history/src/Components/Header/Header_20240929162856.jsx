@@ -36,6 +36,7 @@ function Header({ language, setLanguage }) {
 
   return (
     <header className="header" style={{ direction }}>
+      {/* Logo Section */}
       <div className="header-img">
         <img src="/images/logo.png" alt="Skyculinaire-logo" className="logo" />
       </div>

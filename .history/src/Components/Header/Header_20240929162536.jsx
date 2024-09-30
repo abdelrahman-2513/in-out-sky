@@ -11,39 +11,30 @@ function Header({ language, setLanguage }) {
 
     return () => clearInterval(interval);
   }, []);
-
   const handleLanguageChange = (e) => {
     setLanguage(e.target.value);
   };
-
   const locale = language === "ar" ? "ar-EG" : "en-US";
-
   const options = {
+    weekday: "long", // e.g., "Sunday"
     year: "numeric",
-    month: "long",
+    month: "long", // e.g., "September"
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: true,
+    hour12: language === "en" ? true : false, // 12-hour for English, 24-hour for Arabic
   };
-
-  const formattedDateTime = new Intl.DateTimeFormat(locale, options).format(
+  const formattedDate = new Intl.DateTimeFormat(options, locale).format(
     currentTime
   );
-
-  const direction = language === "ar" ? "rtl" : "ltr";
-
   return (
-    <header className="header" style={{ direction }}>
+    <div className="header">
       <div className="header-img">
         <img src="/images/logo.png" alt="Skyculinaire-logo" className="logo" />
       </div>
 
-      <div className="header-date-time" style={{ direction }}>
-        {formattedDateTime}
-      </div>
-
+      <div className="header-date">{formattedDate}</div>
       <div className="language-selector">
         <label htmlFor="language-select">
           {language === "en" ? "Language:" : "اللغة:"}
@@ -57,7 +48,7 @@ function Header({ language, setLanguage }) {
           <option value="ar">العربية</option>
         </select>
       </div>
-    </header>
+    </div>
   );
 }
 

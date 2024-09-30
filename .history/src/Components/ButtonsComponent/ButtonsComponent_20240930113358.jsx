@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import "./ButtonComponents.css";
-import { takeAction } from "../../assets/API";
-import dayjs from "dayjs";
 
 const nfcMsgs = {
   en: {
@@ -34,63 +32,33 @@ function ButtonsComponent({ language }) {
     }
   }, [language]);
   const handleCheckIn = () => {
-    takeAction({
-      cardId: nfc,
-      date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      kind: "I",
-    })
-      .then((res) => {
-        setMessage("200");
+    setCheckIn(true);
+    setCheckOut(false);
+    setMessage("200");
 
-        setNfc("");
-        setTimeout(() => {
-          setCheckIn(false);
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      })
-      .catch((err) => {
-        setMessage("400");
-        setNfc("");
-        setTimeout(() => {
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      });
+    setNfc("");
+    setTimeout(() => {
+      setCheckIn(false);
+      setMessage("");
+      nfcRef.current.focus();
+      setCheckOut(false);
+    }, 2000);
   };
 
   const handleCheckOut = () => {
-    takeAction({
-      cardId: nfc,
-      date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dataTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      kind: "I",
-    })
-      .then((res) => {
-        console.log(res);
-        setMessage("200-out");
+    setCheckOut(true);
+    setCheckIn(false);
+    nfcRef.current.focus();
 
-        setNfc("");
-        setTimeout(() => {
-          setCheckIn(false);
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setMessage("400-out");
-        setNfc("");
-        setTimeout(() => {
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      });
+    setNfc("");
+    setMessage("400-out");
+
+    setTimeout(() => {
+      setCheckIn(false);
+      setMessage("");
+
+      setCheckOut(false);
+    }, 2000);
   };
 
   const direction = language === "ar" ? "rtl" : "ltr";

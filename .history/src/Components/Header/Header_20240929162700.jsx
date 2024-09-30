@@ -7,25 +7,27 @@ function Header({ language, setLanguage }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(new Date());
-    }, 1000);
+    }, 1000); // Update every second
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   const handleLanguageChange = (e) => {
     setLanguage(e.target.value);
   };
 
+  // Define locale based on selected language
   const locale = language === "ar" ? "ar-EG" : "en-US";
 
+  // Define options for date and time formatting
   const options = {
     year: "numeric",
-    month: "long",
+    month: "long", // e.g., "September"
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: true,
+    hour12: language === "en" ? true : false,
   };
 
   const formattedDateTime = new Intl.DateTimeFormat(locale, options).format(
@@ -36,6 +38,7 @@ function Header({ language, setLanguage }) {
 
   return (
     <header className="header" style={{ direction }}>
+      {/* Logo Section */}
       <div className="header-img">
         <img src="/images/logo.png" alt="Skyculinaire-logo" className="logo" />
       </div>

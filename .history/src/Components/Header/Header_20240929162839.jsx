@@ -25,7 +25,7 @@ function Header({ language, setLanguage }) {
     hour: "2-digit",
     minute: "2-digit",
     second: "2-digit",
-    hour12: true,
+    hour12: language === "en" ? true : false,
   };
 
   const formattedDateTime = new Intl.DateTimeFormat(locale, options).format(
@@ -36,6 +36,7 @@ function Header({ language, setLanguage }) {
 
   return (
     <header className="header" style={{ direction }}>
+      {/* Logo Section */}
       <div className="header-img">
         <img src="/images/logo.png" alt="Skyculinaire-logo" className="logo" />
       </div>

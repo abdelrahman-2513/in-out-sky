@@ -2,9 +2,9 @@ import "./FullComponent.css";
 import DateComponent from "../DateComponent/DateComponent";
 import Header from "../Header/Header";
 import ButtonsComponent from "../ButtonsComponent/ButtonsComponent";
-import { useState } from "react";
 
 function FullComponent() {
+
   const [language, setLanguage] = useState("en");
 
   const direction = language === "ar" ? "rtl" : "ltr";

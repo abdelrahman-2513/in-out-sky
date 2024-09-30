@@ -17,13 +17,16 @@
   color: var(--text-color);
   font-size: larger;
 }
+/* Header.css or ButtonComponents.css */
 
+/* Container for the language selector */
 .language-selector {
   display: flex;
   align-items: center;
   margin: 10px 0;
 }
 
+/* Styling the label */
 .language-selector label {
   font-size: 1rem;
   font-weight: 500;
@@ -31,13 +34,15 @@
   color: #333;
 }
 
+/* Styling the select dropdown */
 .language-selector select {
   padding: 6px 10px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
-
+  appearance: none; /* Remove default arrow */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5'%3E%3Cpath fill='%23333' d='M0 0l5 5 5-5z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 10px 5px;

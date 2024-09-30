@@ -70,7 +70,6 @@ function ButtonsComponent({ language }) {
       kind: "I",
     })
       .then((res) => {
-        console.log(res);
         setMessage("200-out");
 
         setNfc("");
@@ -82,7 +81,6 @@ function ButtonsComponent({ language }) {
         }, 2000);
       })
       .catch((err) => {
-        console.log(err);
         setMessage("400-out");
         setNfc("");
         setTimeout(() => {
