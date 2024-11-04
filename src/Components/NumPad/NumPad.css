@@ -1,0 +1,26 @@
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.button {
+  width: 60px;
+  height: 60px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #202124; /* Dark gray color often used in Google UIs */
+  background-color: #f1f3f4; /* Light gray background */
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px rgba(60, 64, 67, 0.15); /* Subtle shadow for depth */
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  background-color: #e8eaed; /* Optional hover effect */
+}

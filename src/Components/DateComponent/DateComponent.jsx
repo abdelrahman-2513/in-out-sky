@@ -6,5 +6,6 @@ function DateComponent({ language }) {
   );
   return <div className="date-header">{weekday}</div>;
 }
+console.log(Date.now());
 
 export default DateComponent;
