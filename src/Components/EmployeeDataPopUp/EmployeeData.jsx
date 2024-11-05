@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./EmployeeData.css";
 import { IoIosCloseCircle } from "react-icons/io";
+import { checkIn } from "../../assets/API";
+import dayjs from "dayjs";
+import Confirmation from "../Confirmation/Confirmation";
 
 function EmployeeData({
   title,
@@ -12,26 +15,31 @@ function EmployeeData({
   direction,
   setNfc,
   reset,
+  nfc,
+  selectedTransaction,
 }) {
   const [state, setState] = useState(null);
   const [msg, setMsg] = useState("");
+  const [openConfirmation, setOpenConfirmation] = useState(false);
   const trns = {
     en: {
       name: "Name",
       department: "Department",
-      jop: "Jop",
+      job: "Job",
       ok: "Ok",
-      checkIn: "Check In",
-      checkOut: "Check Out",
+      checkIn: "Clock In",
+      checkOut: "Clock Out",
       "in-200": "Check In Successful",
       "in-400": "Check In Failed",
       "out-200": "Check Out Successful",
       "out-400": "Check Out Failed",
+      date: "Date",
+      time: "Time",
     },
     ar: {
       name: "الاسم",
       department: "القسم",
-      jop: "الوظيفة",
+      job: "الوظيفة",
       ok: "حسنا",
       checkIn: "تسجيل حضور",
       checkOut: "تسجيل انصراف",
@@ -39,7 +47,36 @@ function EmployeeData({
       "in-400": "فشل تسجيل الحضور",
       "out-200": "تسجيل الانصراف ناجح",
       "out-400": "فشل تسجيل الانصراف",
+      date: "التاريخ",
+      time: "الوقت",
     },
+  };
+
+  const handleCheckInT = () => {
+    checkIn({
+      id: nfc,
+      //date: dayjs(new Date()).format("YYYY-MM-DD"),
+      dateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+    })
+      .then((res) => {
+        setMsg(trns[language][`in-200`]);
+        setState(200);
+
+        setTimeout(() => {
+          setState(null);
+          setMsg("");
+          onClose();
+        }, 2000);
+      })
+      .catch((err) => {
+        setMsg(trns[language][`in-400`]);
+        setState(400);
+
+        setTimeout(() => {
+          setState(null);
+          setMsg("");
+        }, 2000);
+      });
   };
 
   function handleCheckIn() {
@@ -74,15 +111,23 @@ function EmployeeData({
         <div className="dialog-content">
           <div className="dialog-row">
             <p> {trns[language].name} :</p>
-            <p>{Employee?.name}</p>
+            <p>{Employee?.personalName}</p>
           </div>
           <div className="dialog-row">
             <p>{trns[language].department} :</p>
-            <p>{Employee?.department}</p>
+            <p>{Employee?.deparmentName}</p>
           </div>
           <div className="dialog-row">
-            <p>{trns[language].jop} :</p>
-            <p>{Employee?.jop}</p>
+            <p>{trns[language].job} :</p>
+            <p>{Employee?.jopName}</p>
+          </div>
+          <div className="dialog-row">
+            <p>{trns[language].date} :</p>
+            <p>{dayjs(new Date()).format("YYYY-MM-DD")}</p>
+          </div>
+          <div className="dialog-row">
+            <p>{trns[language].time} :</p>
+            <p>{dayjs(new Date()).format("hh:mm:ss A")}</p>
           </div>
         </div>
         {/* <div className="dialog-actions">
@@ -103,14 +148,36 @@ function EmployeeData({
         </div>
 
         <div className="dialog-actions">
-          <button className="dialog-btn " onClick={handleCheckOut}>
-            {trns[language].checkOut}
-          </button>
-          <button className="dialog-btn" onClick={handleCheckIn}>
-            {trns[language].checkIn}
-          </button>
+          {selectedTransaction === "clockIn" ? (
+            <button
+              className="dialog-btn"
+              onClick={() => setOpenConfirmation(true)}
+            >
+              {trns[language].checkIn}
+            </button>
+          ) : (
+            <button
+              className="dialog-btn "
+              onClick={() => setOpenConfirmation(true)}
+            >
+              {trns[language].checkOut}
+            </button>
+          )}
         </div>
       </div>
+
+      {openConfirmation && (
+        <Confirmation
+          direction={direction}
+          open={openConfirmation}
+          setOpen={setOpenConfirmation}
+          selectedTransaction={selectedTransaction}
+          language={language}
+          onConfirm={
+            selectedTransaction === "checkIn" ? handleCheckIn : handleCheckOut
+          }
+        />
+      )}
     </div>
   );
 }

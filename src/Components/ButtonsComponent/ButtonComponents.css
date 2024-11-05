@@ -88,6 +88,7 @@
   align-items: center;
   justify-content: space-around;
   text-wrap: pretty;
+  height: 10px;
 }
 .fail {
   color: red;

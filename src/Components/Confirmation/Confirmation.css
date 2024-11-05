@@ -97,3 +97,21 @@
     transform: translateY(0); /* Move to its final position */
   }
 }
+
+.confirmation-actions {
+  margin-top: 40px;
+  justify-content: space-between;
+}
+
+.cancel-btn {
+  background-color: #8c1818;
+  &:hover {
+    background-color: #8c1818;
+  }
+}
+.confirm-btn {
+  background-color: #2f9d68;
+  &:hover {
+    background-color: #2f9d68;
+  }
+}

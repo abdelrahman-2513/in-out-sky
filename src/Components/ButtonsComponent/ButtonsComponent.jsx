@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./ButtonComponents.css";
-import { takeAction } from "../../assets/API";
+import { takeAction, login } from "../../assets/API";
 import dayjs from "dayjs";
 import NumPad from "../NumPad/NumPad";
 import { PiNumpadBold } from "react-icons/pi";
@@ -27,21 +27,23 @@ const nfcMsgs = {
   },
 };
 
-function ButtonsComponent({ language }) {
+function ButtonsComponent({ language, employee, selectedTransaction }) {
   const [nfc, setNfc] = useState("");
   const [checkIn, setCheckIn] = useState(false);
   const [checkOut, setCheckOut] = useState(false);
   const [message, setMessage] = useState("");
   const [showNumPad, setShowNumPad] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false); // State to control the dialog visibility
-  const [employee, setEmployee] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [employeeData, setEmployeeData] = useState(null); // State to control the dialog visibility
   const nfcRef = useRef(null);
 
   useEffect(() => {
+    console.log("selected emp", employee);
+    console.log(selectedTransaction);
     if (language) {
       nfcRef.current.focus();
     }
-  }, [language]);
+  }, [language, employee]);
   const handleCheckIn = () => {
     takeAction({
       cardId: nfc,
@@ -101,7 +103,24 @@ function ButtonsComponent({ language }) {
         }, 2000);
       });
   };
-
+  function handleLogin() {
+    if (nfc === employee?.personalAttCode) {
+      login({ id: nfc }).then((res) => {
+        console.log(res);
+        setMessage("200-login");
+        setEmployeeData(res);
+        setOpenDialog(true);
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
+      });
+    } else {
+      setMessage("400-login");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+    }
+  }
   const direction = language === "ar" ? "rtl" : "ltr";
 
   const handleNumberClick = (number) => {
@@ -121,9 +140,9 @@ function ButtonsComponent({ language }) {
       const emp = {
         name: "Ziad Ahmed",
         department: "Development",
-        jop: "Programmer",
+        job: "Programmer",
       };
-      setEmployee(emp);
+      //setEmployee(emp);
       setOpenDialog(true);
     } else {
       setMessage("400-login");
@@ -142,7 +161,7 @@ function ButtonsComponent({ language }) {
     setNfc("");
     setShowNumPad(false);
     setTimeout(() => {
-      setEmployee(null);
+      //setEmployee(null);
     }, 2000);
   }
 
@@ -212,14 +231,8 @@ function ButtonsComponent({ language }) {
             className={message?.includes("400") ? "fail" : "success"}
             style={{ textAlign: "center" }}
           >
-            {nfcMsgs[language][message]}
+            {message && nfcMsgs[language][message]}
           </p>
-          {/* <img
-              className="gif"
-              src="/images/NFC.gif"
-              alt={language === "en" ? "Move NFC Card" : "حرك بطاقة NFC"}
-              srcSet=""
-            /> */}
         </div>
       </div>
 
@@ -230,7 +243,7 @@ function ButtonsComponent({ language }) {
         <button className="btn btn-primary" onClick={handleCheckIn}>
           {language === "en" ? "Check In" : "تسجيل الدخول"}
         </button> */}
-        <button className="btn btn-primary" onClick={handleLoginClick}>
+        <button className="btn btn-primary" onClick={handleLogin}>
           {language === "en" ? "Login" : "تسجيل الدخول"}
         </button>
       </div>
@@ -242,8 +255,10 @@ function ButtonsComponent({ language }) {
           message={nfcMsgs[language][message] || ""}
           language={language}
           direction={direction}
-          Employee={employee}
+          Employee={employeeData}
+          selectedTransaction={selectedTransaction}
           reset={reset}
+          nfc={nfc}
         />
       )}
     </div>
