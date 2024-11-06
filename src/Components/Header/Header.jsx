@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 
-function Header({ language, setLanguage }) {
+function Header({ language, setLanguage, reset }) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -37,7 +37,12 @@ function Header({ language, setLanguage }) {
   return (
     <header className="header" style={{ direction }}>
       <div className="header-img">
-        <img src="/images/logo.png" alt="Skyculinaire-logo" className="logo" />
+        <img
+          src="/images/logo.png"
+          onClick={reset}
+          alt="Skyculinaire-logo"
+          className="logo"
+        />
       </div>
 
       <div className="header-date-time" style={{ direction }}>

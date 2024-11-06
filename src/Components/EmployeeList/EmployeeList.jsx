@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { getEmployees } from "../../assets/API";
 import dayjs from "dayjs";
 import "./EmployeeList.css";
-function EmployeeList({ department, setEmployee, language }) {
+function EmployeeList({ department, setEmployee, language, reset }) {
   const [employees, setEmployees] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const employeesTrans = {
     en: {
       "": "Please Select Your Name",
+      empty: "No Employees Found",
     },
     ar: {
       "": "يرجى أختيار اسمك",
+      empty: "لم يتم العثور على موظفين",
     },
   };
   function handleDepSelection(e) {
@@ -72,8 +74,20 @@ function EmployeeList({ department, setEmployee, language }) {
           ))}
         </div>
       ) : (
-        ""
+        <p>{employeesTrans[language]["empty"]}</p>
       )}
+      <div className="btns login-btn-container">
+        {/* <button className="btn" onClick={handleCheckOut}>
+          {language === "en" ? "Check Out" : "تسجيل الخروج"}
+        </button>
+        <button className="btn btn-primary" onClick={handleCheckIn}>
+          {language === "en" ? "Check In" : "تسجيل الدخول"}
+        </button> */}
+
+        <button className="btn btn-primary back-btn" onClick={reset}>
+          {language === "en" ? "Home Page" : "الصفحة الرئيسية"}
+        </button>
+      </div>
     </div>
   );
 }

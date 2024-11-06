@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./EmployeeData.css";
 import { IoIosCloseCircle } from "react-icons/io";
-import { checkIn } from "../../assets/API";
+import { checkIn, checkOut } from "../../assets/API";
 import dayjs from "dayjs";
 import Confirmation from "../Confirmation/Confirmation";
 
@@ -35,6 +35,8 @@ function EmployeeData({
       "out-400": "Check Out Failed",
       date: "Date",
       time: "Time",
+      checkedInBefore: "Checked In Before",
+      checkedOutBefore: "Checked Out Before",
     },
     ar: {
       name: "الاسم",
@@ -49,14 +51,17 @@ function EmployeeData({
       "out-400": "فشل تسجيل الانصراف",
       date: "التاريخ",
       time: "الوقت",
+      checkedInBefore: "تم تسجيل الحضور من قبل",
+      checkedOutBefore: "تم تسجيل الانصراف من قبل",
     },
   };
 
-  const handleCheckInT = () => {
+  const handleCheckIn = () => {
     checkIn({
-      id: nfc,
+      vCardNumber: nfc,
       //date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      attDateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      attDate: dayjs(new Date()).format("YYYY-MM-DD"),
     })
       .then((res) => {
         setMsg(trns[language][`in-200`]);
@@ -66,36 +71,75 @@ function EmployeeData({
           setState(null);
           setMsg("");
           onClose();
-        }, 2000);
+          reset();
+        }, 5000);
       })
       .catch((err) => {
-        setMsg(trns[language][`in-400`]);
-        setState(400);
+        if (err.response.data.includes("User Loged In Befor")) {
+          setMsg(trns[language][`checkedInBefore`]);
+          setState(400);
+        } else {
+          setMsg(trns[language][`in-400`]);
+          setState(400);
+        }
 
         setTimeout(() => {
           setState(null);
           setMsg("");
-        }, 2000);
+        }, 5000);
       });
   };
 
-  function handleCheckIn() {
-    setState(200);
-    setMsg(trns[language][`in-200`]);
-    setTimeout(() => {
-      onClose();
-    }, 2000);
-    reset();
-  }
+  const handleCheckOut = () => {
+    checkOut({
+      vCardNumber: nfc,
+      //date: dayjs(new Date()).format("YYYY-MM-DD"),
+      attDateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+      attDate: dayjs(new Date()).format("YYYY-MM-DD"),
+    })
+      .then((res) => {
+        setMsg(trns[language][`out-200`]);
+        setState(200);
+        setTimeout(() => {
+          setState(null);
+          setMsg("");
 
-  function handleCheckOut() {
-    setState(200);
-    setMsg(trns[language]["out-200"]);
-    setTimeout(() => {
-      onClose();
-    }, 2000);
-    reset();
-  }
+          onClose();
+          reset();
+        }, 5000);
+      })
+      .catch((err) => {
+        if (err.response.data.includes("User Loged Out Befor")) {
+          setMsg(trns[language][`checkedOutBefore`]);
+          setState(400);
+        } else {
+          setMsg(trns[language][`out-400`]);
+          setState(400);
+        }
+        setTimeout(() => {
+          setState(null);
+          setMsg("");
+        }, 5000);
+      });
+  };
+
+  // function handleCheckIn() {
+  //   setState(200);
+  //   setMsg(trns[language][`in-200`]);
+  //   setTimeout(() => {
+  //     onClose();
+  //   }, 2000);
+  //   reset();
+  // }
+
+  // function handleCheckOut() {
+  //   setState(200);
+  //   setMsg(trns[language]["out-200"]);
+  //   setTimeout(() => {
+  //     onClose();
+  //   }, 2000);
+  //   reset();
+  // }
 
   return (
     <div className="dialog-overlay" style={{ direction: direction }}>
@@ -127,7 +171,7 @@ function EmployeeData({
           </div>
           <div className="dialog-row">
             <p>{trns[language].time} :</p>
-            <p>{dayjs(new Date()).format("hh:mm:ss A")}</p>
+            <p>{dayjs(new Date()).format("hh:mm A")}</p>
           </div>
         </div>
         {/* <div className="dialog-actions">
@@ -135,7 +179,7 @@ function EmployeeData({
             Close
           </button>
         </div> */}
-        <div className="feedback">
+        {/* <div className="feedback">
           {msg && (
             <p
               style={{
@@ -145,7 +189,7 @@ function EmployeeData({
               {msg}
             </p>
           )}
-        </div>
+        </div> */}
 
         <div className="dialog-actions">
           {selectedTransaction === "clockIn" ? (
@@ -174,8 +218,11 @@ function EmployeeData({
           selectedTransaction={selectedTransaction}
           language={language}
           onConfirm={
-            selectedTransaction === "checkIn" ? handleCheckIn : handleCheckOut
+            selectedTransaction === "clockIn" ? handleCheckIn : handleCheckOut
           }
+          msg={msg}
+          state={state}
+          reset={reset}
         />
       )}
     </div>

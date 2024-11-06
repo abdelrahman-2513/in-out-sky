@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDepartments } from "../../assets/API";
 import "./DepartmentComponent.css";
-function DepartmentComponent({ language, setDeratment }) {
+function DepartmentComponent({ language, setDeratment, reset }) {
   const [depatrments, setDepatrments] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const depatrmentsTrans = {
@@ -37,7 +37,12 @@ function DepartmentComponent({ language, setDeratment }) {
   return (
     <div
       className="secondary-container"
-      style={{ display: "flex", gap: "60px", padding: "40px" }}
+      style={{
+        display: "flex",
+        gap: "20px",
+        padding: "40px",
+        position: "relative",
+      }}
     >
       <div className="message">
         <div className="message-content">
@@ -58,6 +63,11 @@ function DepartmentComponent({ language, setDeratment }) {
       ) : depatrments && depatrments.length > 0 ? (
         <div className="language-selector">
           <select onChange={handleDepSelection}>
+            <option id="language-select">
+              {language === "en"
+                ? "Please select a department"
+                : "يرجى أختيار القسم"}
+            </option>
             {depatrments?.map((department, index) => (
               <option
                 id="language-select"
@@ -73,6 +83,18 @@ function DepartmentComponent({ language, setDeratment }) {
       ) : (
         ""
       )}
+      <div className="btns login-btn-container">
+        {/* <button className="btn" onClick={handleCheckOut}>
+          {language === "en" ? "Check Out" : "تسجيل الخروج"}
+        </button>
+        <button className="btn btn-primary" onClick={handleCheckIn}>
+          {language === "en" ? "Check In" : "تسجيل الدخول"}
+        </button> */}
+
+        <button className="btn btn-primary back-btn" onClick={reset}>
+          {language === "en" ? "Home Page" : "الصفحة الرئيسية"}
+        </button>
+      </div>
     </div>
   );
 }

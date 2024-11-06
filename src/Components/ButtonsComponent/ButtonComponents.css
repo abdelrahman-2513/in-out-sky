@@ -106,3 +106,10 @@
   display: flex;
   justify-content: center;
 }
+
+.back-btn {
+  background-color: #6c757d;
+  &:hover {
+    background-color: #5a6268;
+  }
+}

@@ -27,7 +27,7 @@ const nfcMsgs = {
   },
 };
 
-function ButtonsComponent({ language, employee, selectedTransaction }) {
+function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
   const [nfc, setNfc] = useState("");
   const [checkIn, setCheckIn] = useState(false);
   const [checkOut, setCheckOut] = useState(false);
@@ -157,7 +157,8 @@ function ButtonsComponent({ language, employee, selectedTransaction }) {
   const handleClosePopup = () => {
     setShowPopup(false); // Close the popup
   };
-  function reset() {
+  function resetAll() {
+    reset();
     setNfc("");
     setShowNumPad(false);
     setTimeout(() => {
@@ -246,6 +247,9 @@ function ButtonsComponent({ language, employee, selectedTransaction }) {
         <button className="btn btn-primary" onClick={handleLogin}>
           {language === "en" ? "Login" : "تسجيل الدخول"}
         </button>
+        <button className="btn btn-primary back-btn" onClick={reset}>
+          {language === "en" ? "Home Page" : "الصفحة الرئيسية"}
+        </button>
       </div>
 
       {openDialog && (
@@ -257,7 +261,7 @@ function ButtonsComponent({ language, employee, selectedTransaction }) {
           direction={direction}
           Employee={employeeData}
           selectedTransaction={selectedTransaction}
-          reset={reset}
+          reset={resetAll}
           nfc={nfc}
         />
       )}

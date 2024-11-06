@@ -35,17 +35,51 @@ export function login(data) {
 export function checkIn(data) {
   const requestOptions = {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     redirect: "follow",
   };
-  console.log(data);
+  console.log("check in data", data);
+  console.log(
+    "http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckIn"
+  );
   return axios
     .post(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckIn?vCardNumber=${data.id}&AttDateTime=${data.dateTime}`
+      `http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckIn`,
+      data
     )
     .then((response) => {
+      console.log(response);
       return response.data;
     })
     .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+}
+
+export function checkOut(data) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    redirect: "follow",
+  };
+  console.log("Chick out data", data);
+  return axios
+    .post(
+      `http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckOut`,
+      { ...data },
+      requestOptions
+    )
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
       throw error;
     });
 }

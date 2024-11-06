@@ -13,10 +13,16 @@ function FullComponent() {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [deparment, setDepartment] = useState(null);
   const [employee, setEmployee] = useState(null);
+
+  function reset() {
+    setEmployee(null);
+    setDepartment(null);
+    setSelectedTransaction(null);
+  }
   const direction = language === "ar" ? "rtl" : "ltr";
   return (
     <div className="main-container" style={{ direction }}>
-      <Header language={language} setLanguage={setLanguage} />
+      <Header reset={reset} language={language} setLanguage={setLanguage} />
       <DateComponent language={language} />
       {/* <WelcomeComponent language={language} /> */}
       {employee ? (
@@ -24,12 +30,14 @@ function FullComponent() {
           selectedTransaction={selectedTransaction}
           employee={employee}
           language={language}
+          reset={reset}
         />
       ) : deparment ? (
         <EmployeeList
           setEmployee={setEmployee}
           language={language}
           department={deparment}
+          reset={reset}
         />
       ) : !selectedTransaction ? (
         <TransactionsComponent
@@ -37,7 +45,11 @@ function FullComponent() {
           language={language}
         />
       ) : (
-        <DepartmentComponent language={language} setDeratment={setDepartment} />
+        <DepartmentComponent
+          language={language}
+          setDeratment={setDepartment}
+          reset={reset}
+        />
       )}
     </div>
   );
