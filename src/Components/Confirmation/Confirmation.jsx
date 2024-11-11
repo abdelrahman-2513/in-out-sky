@@ -70,7 +70,7 @@ function Confirmation({
             {confTrns[language].confirm}
           </button>
           <button
-            className="dialog-btn cancel-btn "
+            className="dialog-btn cancel-btn"
             onClick={() => setOpen(false)}
           >
             {confTrns[language].cancel}

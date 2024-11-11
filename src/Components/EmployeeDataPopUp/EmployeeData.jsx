@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./EmployeeData.css";
 import { IoIosCloseCircle } from "react-icons/io";
 import { checkIn, checkOut } from "../../assets/API";
@@ -21,6 +21,8 @@ function EmployeeData({
   const [state, setState] = useState(null);
   const [msg, setMsg] = useState("");
   const [openConfirmation, setOpenConfirmation] = useState(false);
+  const [actionClicked, setActionClicked] = useState(false);
+  const [timeRemains, setTimeRemains] = useState(20000);
   const trns = {
     en: {
       name: "Name",
@@ -37,6 +39,11 @@ function EmployeeData({
       time: "Time",
       checkedInBefore: "Checked In Before",
       checkedOutBefore: "Checked Out Before",
+      title: `Are you sure you want to ${
+        selectedTransaction === "clockIn" ? "clock in" : "clock out"
+      } on ${dayjs(new Date()).format("dddd D/MMMM/YYYY")}, at ${dayjs(
+        new Date()
+      ).format("HH:mm ")}?`,
     },
     ar: {
       name: "الاسم",
@@ -53,6 +60,11 @@ function EmployeeData({
       time: "الوقت",
       checkedInBefore: "تم تسجيل الحضور من قبل",
       checkedOutBefore: "تم تسجيل الانصراف من قبل",
+      title: `هل أنت متأكد أنك تريد ${
+        selectedTransaction === "clockIn" ? "تسجيل الحضور" : "تسجيل الانصراف"
+      } في ${dayjs(new Date()).format("dddd D/MMMM/YYYY")} في  ${dayjs(
+        new Date()
+      ).format("HH:mm ")}؟`,
     },
   };
 
@@ -141,37 +153,54 @@ function EmployeeData({
   //   reset();
   // }
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+      reset();
+    }, timeRemains);
+
+    // Clear timeout if timeRemains changes or component unmounts
+    return () => clearTimeout(timer);
+  }, [timeRemains, reset]);
+  function onConfirm() {
+    if (selectedTransaction === "clockIn") {
+      handleCheckIn();
+    } else {
+      handleCheckOut();
+    }
+  }
+
   return (
     <div className="dialog-overlay" style={{ direction: direction }}>
       <div className="dialog">
         <div className="dialog-header">
-          <h2>{title}</h2>
+          <h4>{trns[language].title}</h4>
           <IoIosCloseCircle
-            size={25}
+            size={30}
             className="close-button"
             onClick={onClose}
           />
         </div>
         <div className="dialog-content">
           <div className="dialog-row">
-            <p> {trns[language].name} :</p>
-            <p>{Employee?.personalName}</p>
+            <p> {trns[language].name} </p>
+            <p>: {Employee?.personalName}</p>
           </div>
           <div className="dialog-row">
-            <p>{trns[language].department} :</p>
-            <p>{Employee?.deparmentName}</p>
+            <p>{trns[language].department} </p>
+            <p>: {Employee?.deparmentName}</p>
           </div>
           <div className="dialog-row">
-            <p>{trns[language].job} :</p>
-            <p>{Employee?.jopName}</p>
+            <p>{trns[language].job} </p>
+            <p>: {Employee?.jopName}</p>
           </div>
           <div className="dialog-row">
-            <p>{trns[language].date} :</p>
-            <p>{dayjs(new Date()).format("YYYY-MM-DD")}</p>
+            <p>{trns[language].date} </p>
+            <p>: {dayjs(new Date()).format("dddd D/MMMM/YYYY")}</p>
           </div>
           <div className="dialog-row">
-            <p>{trns[language].time} :</p>
-            <p>{dayjs(new Date()).format("hh:mm A")}</p>
+            <p>{trns[language].time} </p>
+            <p>: {dayjs(new Date()).format("HH:mm ")}</p>
           </div>
         </div>
         {/* <div className="dialog-actions">
@@ -179,7 +208,7 @@ function EmployeeData({
             Close
           </button>
         </div> */}
-        {/* <div className="feedback">
+        <div className="feedback">
           {msg && (
             <p
               style={{
@@ -189,24 +218,27 @@ function EmployeeData({
               {msg}
             </p>
           )}
-        </div> */}
+        </div>
 
-        <div className="dialog-actions">
-          {selectedTransaction === "clockIn" ? (
-            <button
-              className="dialog-btn"
-              onClick={() => setOpenConfirmation(true)}
-            >
-              {trns[language].checkIn}
-            </button>
-          ) : (
-            <button
-              className="dialog-btn "
-              onClick={() => setOpenConfirmation(true)}
-            >
-              {trns[language].checkOut}
-            </button>
-          )}
+        <div
+          className="dialog-actions"
+          style={{ justifyContent: "space-between" }}
+        >
+          <button
+            className="dialog-btn confirm-btn"
+            id={actionClicked ? "disabled" : ""}
+            onClick={() => {
+              if (actionClicked) return;
+              setActionClicked(true);
+              setTimeRemains(5000);
+              onConfirm();
+            }}
+          >
+            {language === "en" ? "Yes" : "نعم"}
+          </button>
+          <button className="dialog-btn cancel-btn" onClick={onClose}>
+            {language === "en" ? "No" : "لا"}
+          </button>
         </div>
       </div>
 

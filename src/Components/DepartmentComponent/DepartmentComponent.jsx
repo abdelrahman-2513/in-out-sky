@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getDepartments } from "../../assets/API";
-import "./DepartmentComponent.css";
+
 function DepartmentComponent({ language, setDeratment, reset }) {
   const [depatrments, setDepatrments] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +42,7 @@ function DepartmentComponent({ language, setDeratment, reset }) {
         gap: "20px",
         padding: "40px",
         position: "relative",
+        maxWidth: "100%",
       }}
     >
       <div className="message">
@@ -61,14 +62,14 @@ function DepartmentComponent({ language, setDeratment, reset }) {
       {isLoading ? (
         <span className="loader"></span>
       ) : depatrments && depatrments.length > 0 ? (
-        <div className="language-selector">
-          <select onChange={handleDepSelection}>
+        <div className="content-btns-container">
+          {/* <select onChange={handleDepSelection}>
             <option id="language-select">
               {language === "en"
                 ? "Please select a department"
                 : "يرجى أختيار القسم"}
             </option>
-            {depatrments?.map((department, index) => (
+            {depatrments?.map((department) => (
               <option
                 id="language-select"
                 key={department.departmentId}
@@ -78,7 +79,18 @@ function DepartmentComponent({ language, setDeratment, reset }) {
                 {department.departmentName}
               </option>
             ))}
-          </select>
+          </select> */}
+          {depatrments?.map((department) => (
+            <button
+              className="list-btn"
+              //id="language-select"
+              key={department.departmentId}
+              onClick={(e) => handleDepSelection(e)}
+              value={[department.departmentId, department.departmentName]}
+            >
+              {department.departmentName}
+            </button>
+          ))}
         </div>
       ) : (
         ""
@@ -92,7 +104,7 @@ function DepartmentComponent({ language, setDeratment, reset }) {
         </button> */}
 
         <button className="btn btn-primary back-btn" onClick={reset}>
-          {language === "en" ? "Home Page" : "الصفحة الرئيسية"}
+          {language === "en" ? "Go Back Home" : "العودة للصفحة الرئيسية"}
         </button>
       </div>
     </div>

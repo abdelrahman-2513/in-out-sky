@@ -59,18 +59,31 @@ function EmployeeList({ department, setEmployee, language, reset }) {
       {isLoading ? (
         <span className="loader"></span>
       ) : employees && employees.length > 0 ? (
-        <div className="employees-table">
-          <div className="employee-header">
-            {language === "en" ? "Employee Name" : "اسم الموظف"}
-          </div>
-          {employees.map((emp) => (
-            <div
-              className="employee-row"
-              onClick={() => handleEmployeeSelection(emp)}
-              key={emp}
+        // <div className="employees-table">
+        //   <div className="employee-header">
+        //     {language === "en" ? "Employee Name" : "اسم الموظف"}
+        //   </div>
+        //   {employees.map((emp) => (
+        //     <div
+        //       className="employee-row"
+        //       onClick={() => handleEmployeeSelection(emp)}
+        //       key={emp}
+        //     >
+        //       {emp.personalName}
+        //     </div>
+        //   ))}
+        // </div>
+        <div className="content-btns-container">
+          {employees?.map((employee) => (
+            <button
+              className="list-btn"
+              style={{ direction: "rtl" }}
+              //id="language-select"
+              key={employee.personalId}
+              onClick={() => handleEmployeeSelection(employee)}
             >
-              {emp.personalName}
-            </div>
+              {employee.personalName}
+            </button>
           ))}
         </div>
       ) : (

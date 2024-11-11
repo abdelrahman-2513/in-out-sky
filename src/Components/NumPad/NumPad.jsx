@@ -2,7 +2,7 @@
 import React from "react";
 import "./NumPad.css";
 
-const NumPad = ({ onNumberClick, onClear, onDelete }) => {
+const NumPad = ({ onNumberClick, onClear, onDelete, onConfirm }) => {
   return (
     <div className="numpad">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((number) => (
@@ -19,6 +19,9 @@ const NumPad = ({ onNumberClick, onClear, onDelete }) => {
       </button>
       <button className="button" onClick={onDelete}>
         ←
+      </button>
+      <button className="button ok-button" onClick={onConfirm}>
+        Ok
       </button>
     </div>
   );

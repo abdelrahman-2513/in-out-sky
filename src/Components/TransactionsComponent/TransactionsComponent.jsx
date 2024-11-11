@@ -1,4 +1,5 @@
 import React from "react";
+import LogGrid from "../LogGrid/LogGrid";
 
 function TransactionsComponent({
   language,
@@ -23,7 +24,13 @@ function TransactionsComponent({
   return (
     <div
       className="secondary-container"
-      style={{ display: "flex", gap: "60px", padding: "40px" }}
+      style={{
+        display: "flex",
+        maxWidth: "100%",
+        width: "100%",
+        gap: "10px",
+        padding: "40px",
+      }}
     >
       <div className="message">
         <div className="message-content">
@@ -38,25 +45,31 @@ function TransactionsComponent({
             /> */}
         </div>
       </div>
-      <div className="btns login-btn-container">
-        {/* <button className="btn" onClick={handleCheckOut}>
+      <div className="main-grid">
+        <div
+          className="btns login-btn-container half-screen"
+          style={{ gap: "10px" }}
+        >
+          {/* <button className="btn" onClick={handleCheckOut}>
           {language === "en" ? "Check Out" : "تسجيل الخروج"}
         </button>
         <button className="btn btn-primary" onClick={handleCheckIn}>
           {language === "en" ? "Check In" : "تسجيل الدخول"}
         </button> */}
-        <button
-          className="btn btn-primary"
-          onClick={() => setSelectedTransaction("clockIn")}
-        >
-          {language === "en" ? "Clock In" : "تسجيل حضور"}
-        </button>
-        <button
-          className="btn btn-primary"
-          onClick={() => setSelectedTransaction("clockOut")}
-        >
-          {language === "en" ? "Clock Out" : "تسجيل انصراف"}
-        </button>
+          <button
+            className="btn btn-primary trns-btn"
+            onClick={() => setSelectedTransaction("clockIn")}
+          >
+            {language === "en" ? "Clock In" : "تسجيل حضور"}
+          </button>
+          <button
+            className="btn btn-primary trns-btn"
+            onClick={() => setSelectedTransaction("clockOut")}
+          >
+            {language === "en" ? "Clock Out" : "تسجيل انصراف"}
+          </button>
+        </div>
+        <LogGrid language={language} />
       </div>
     </div>
   );

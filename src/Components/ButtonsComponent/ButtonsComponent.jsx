@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import NumPad from "../NumPad/NumPad";
 import { PiNumpadBold } from "react-icons/pi";
 import EmployeeData from "../EmployeeDataPopUp/EmployeeData";
+import { TbGridDots } from "react-icons/tb";
 
 const nfcMsgs = {
   en: {
@@ -107,7 +108,7 @@ function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
     if (nfc === employee?.personalAttCode) {
       login({ id: nfc }).then((res) => {
         console.log(res);
-        setMessage("200-login");
+        //setMessage("200-login");
         setEmployeeData(res);
         setOpenDialog(true);
         setTimeout(() => {
@@ -193,8 +194,8 @@ function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
             value={nfc}
             style={{ paddingRight: "40px" }} // Add padding to prevent text overlap with icon
           />
-          <PiNumpadBold
-            size={30}
+          <TbGridDots
+            size={24}
             onClick={() => setShowNumPad(!showNumPad)}
             style={{
               position: "absolute",
@@ -212,9 +213,10 @@ function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
               onNumberClick={handleNumberClick}
               onClear={handleClear}
               onDelete={handleDelete}
+              onConfirm={handleLogin}
             />
           ) : (
-            <div style={{ margin: "65px 0" }}>
+            <div style={{ margin: "72px 0" }}>
               <img
                 className="gif"
                 src="/images/NFC.gif"
@@ -244,11 +246,11 @@ function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
         <button className="btn btn-primary" onClick={handleCheckIn}>
           {language === "en" ? "Check In" : "تسجيل الدخول"}
         </button> */}
-        <button className="btn btn-primary" onClick={handleLogin}>
+        {/* <button className="btn btn-primary" onClick={handleLogin}>
           {language === "en" ? "Login" : "تسجيل الدخول"}
-        </button>
+        </button> */}
         <button className="btn btn-primary back-btn" onClick={reset}>
-          {language === "en" ? "Home Page" : "الصفحة الرئيسية"}
+          {language === "en" ? "Go back Home" : "العودة للصفحة الرئيسية"}
         </button>
       </div>
 

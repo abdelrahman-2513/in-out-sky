@@ -16,7 +16,7 @@
   background: white;
   border-radius: 8px;
   padding: 20px;
-  max-width: 600px;
+  max-width: 900px;
   min-width: 400px; /* Set a maximum width for the dialog */
   width: 100%; /* Allow it to be responsive */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */

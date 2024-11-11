@@ -16,7 +16,7 @@
   background: white;
   border-radius: 8px;
   padding: 20px;
-  max-width: 600px;
+  max-width: 800px;
   min-width: 400px; /* Set a maximum width for the dialog */
   width: 100%; /* Allow it to be responsive */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
@@ -31,7 +31,9 @@
 
 .close-button {
   border: none;
-
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
   font-size: 1em;
   border-radius: 50%;
   cursor: pointer;
@@ -74,6 +76,9 @@
   display: flex;
   justify-content: flex-start;
   gap: 6px;
+}
+.dialog-row p:first-of-type {
+  width: 120px;
 }
 .feedback {
   margin: 20px 0;
