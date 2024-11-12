@@ -42,7 +42,7 @@ function EmployeeList({ department, setEmployee, language, reset }) {
   return (
     <div
       className="secondary-container"
-      style={{ display: "flex", gap: "60px", padding: "40px" }}
+      style={{ display: "flex", gap: "20px" }}
     >
       <div className="message">
         <div className="message-content">

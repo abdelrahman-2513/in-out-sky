@@ -63,6 +63,42 @@
   margin-left: 8px;
 }
 
+.language-tabs {
+  display: flex;
+
+  padding: 5px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.language-tabs div {
+  text-decoration: none;
+  color: #aaaaaa;
+  font-weight: 500;
+  font-size: 0.9rem;
+  font-size: 13px;
+}
+
+.language-tabs div:hover {
+  color: var(--color-text-active);
+  cursor: pointer;
+}
+
+.language-tabs .active {
+  display: inline-block;
+  width: 65%;
+  max-width: 150px;
+  min-width: fit-content;
+  padding: 5px 10px;
+  border-bottom: 2px solid var(--color-text-active);
+  color: var(--color-text-active);
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5em;
+  background: #1677ff14;
+}
+
 /* Responsive Design: Stack label and select on smaller screens */
 @media (max-width: 600px) {
   .language-selector {

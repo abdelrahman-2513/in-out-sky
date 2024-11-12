@@ -40,7 +40,7 @@ function DepartmentComponent({ language, setDeratment, reset }) {
       style={{
         display: "flex",
         gap: "20px",
-        padding: "40px",
+
         position: "relative",
         maxWidth: "100%",
       }}

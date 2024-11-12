@@ -49,7 +49,7 @@ function Header({ language, setLanguage, reset }) {
         {formattedDateTime}
       </div>
 
-      <div className="language-selector">
+      {/* <div className="language-selector">
         <label htmlFor="language-select">
           {language === "en" ? "Language:" : "اللغة:"}
         </label>
@@ -61,6 +61,21 @@ function Header({ language, setLanguage, reset }) {
           <option value="en">English</option>
           <option value="ar">العربية</option>
         </select>
+      </div> */}
+
+      <div className="language-tabs">
+        <div
+          className={`language-tab ${language === "en" ? "active" : ""}`}
+          onClick={() => setLanguage("en")}
+        >
+          English
+        </div>
+        <div
+          className={`language-tab ${language === "ar" ? "active" : ""}`}
+          onClick={() => setLanguage("ar")}
+        >
+          العربية
+        </div>
       </div>
     </header>
   );

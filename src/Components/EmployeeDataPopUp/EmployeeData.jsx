@@ -62,7 +62,7 @@ function EmployeeData({
       checkedOutBefore: "تم تسجيل الانصراف من قبل",
       title: `هل أنت متأكد أنك تريد ${
         selectedTransaction === "clockIn" ? "تسجيل الحضور" : "تسجيل الانصراف"
-      } في ${dayjs(new Date()).format("dddd D/MMMM/YYYY")} في  ${dayjs(
+      } في ${dayjs(new Date()).format("dddd D/MMMM/YYYY")} في الساعة ${dayjs(
         new Date()
       ).format("HH:mm ")}؟`,
     },

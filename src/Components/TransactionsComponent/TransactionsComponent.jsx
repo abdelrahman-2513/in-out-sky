@@ -15,7 +15,7 @@ function TransactionsComponent({
       "400-out": "Check-Out Failed",
     },
     ar: {
-      "": "مرحبا بك في نظام تسجيل الدخول",
+      "": "مرحبًا بكم في نظام تسجيل الحضور الخاص بـ Sky Culinaire",
       200: "تسجيل الدخول ناجح",
       400: "فشل تسجيل الدخول",
     },
@@ -29,7 +29,6 @@ function TransactionsComponent({
         maxWidth: "100%",
         width: "100%",
         gap: "10px",
-        padding: "40px",
       }}
     >
       <div className="message">
@@ -46,6 +45,9 @@ function TransactionsComponent({
         </div>
       </div>
       <div className="main-grid">
+        <LogGrid language={language} />
+        <div className="divider"></div>
+
         <div
           className="btns login-btn-container half-screen"
           style={{ gap: "10px" }}
@@ -69,7 +71,6 @@ function TransactionsComponent({
             {language === "en" ? "Clock Out" : "تسجيل انصراف"}
           </button>
         </div>
-        <LogGrid language={language} />
       </div>
     </div>
   );
