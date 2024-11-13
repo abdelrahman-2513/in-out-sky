@@ -38,6 +38,7 @@ function FullComponent() {
           language={language}
           department={deparment}
           reset={reset}
+          transaction={selectedTransaction}
         />
       ) : !selectedTransaction ? (
         <TransactionsComponent

@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { getEmployees } from "../../assets/API";
+import { getInEmployees, getOutEmployees } from "../../assets/API";
 import dayjs from "dayjs";
 import "./EmployeeList.css";
-function EmployeeList({ department, setEmployee, language, reset }) {
+function EmployeeList({
+  department,
+  setEmployee,
+  language,
+  reset,
+  transaction,
+}) {
   const [employees, setEmployees] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const employeesTrans = {
@@ -25,15 +31,27 @@ function EmployeeList({ department, setEmployee, language, reset }) {
       date: dayjs(new Date()).format("YYYY-MM-DD"),
       departmentId: department?.id,
     };
+    console.log("tst", data);
     setIsLoading(true);
-    getEmployees(data)
-      .then((res) => {
-        console.log(res);
+    if (transaction === "clockIn") {
+      getInEmployees(data)
+        .then((res) => {
+          console.log(res);
 
-        setEmployees(res);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+          setEmployees(res);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false));
+    } else {
+      getOutEmployees(data)
+        .then((res) => {
+          console.log(res);
+
+          setEmployees(res);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setIsLoading(false));
+    }
   }, [department]);
 
   function handleEmployeeSelection(emp) {

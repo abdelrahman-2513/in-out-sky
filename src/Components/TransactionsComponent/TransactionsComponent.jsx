@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LogGrid from "../LogGrid/LogGrid";
+import { getEmployeesInList } from "../../assets/API";
+import dayjs from "dayjs";
 
 function TransactionsComponent({
   language,
   message = "",
   setSelectedTransaction,
 }) {
+  const [employeesList, setEmployeesList] = useState([]);
   const transactions = {
     en: {
       "": "Welcome To Sky Culinaire Check-In System",
@@ -20,7 +23,17 @@ function TransactionsComponent({
       400: "فشل تسجيل الدخول",
     },
   };
-  console.log(language);
+
+  useEffect(() => {
+    getEmployeesInList({ date: dayjs(new Date()).format("YYYY-MM-DD") })
+      .then((res) => {
+        setEmployeesList(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <div
       className="secondary-container"
@@ -45,7 +58,7 @@ function TransactionsComponent({
         </div>
       </div>
       <div className="main-grid">
-        <LogGrid language={language} />
+        <LogGrid employeesList={employeesList} language={language} />
         <div className="divider"></div>
 
         <div

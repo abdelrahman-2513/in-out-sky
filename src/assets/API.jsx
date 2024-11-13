@@ -95,11 +95,39 @@ export function getDepartments() {
     });
 }
 
-export function getEmployees(data) {
+export function getInEmployees(data) {
   console.log(data);
   return axios
     .get(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/Employee?DepId=${data.departmentId}&DateChick=${data.date}`
+      `http://zasair-001-site8.atempurl.com/api/HrAttendance/EmployeeIn?DepId=${data.departmentId}&DateChick=${data.date}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export function getOutEmployees(data) {
+  console.log(data);
+  return axios
+    .get(
+      `http://zasair-001-site8.atempurl.com/api/HrAttendance/EmployeeOut?DepId=${data.departmentId}&DateChick=${data.date}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export function getEmployeesInList(data) {
+  console.log(data);
+  return axios
+    .get(
+      `http://zasair-001-site8.atempurl.com/api/HrAttendance/InList?DateChick=${data.date}`
     )
     .then((response) => {
       return response.data;

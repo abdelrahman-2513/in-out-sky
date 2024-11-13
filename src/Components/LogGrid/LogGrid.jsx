@@ -33,7 +33,9 @@ const groupByDepartment = (data) => {
   }, {});
 };
 
-export default function LogGrid({ language }) {
+export default function LogGrid({ language, employeesList }) {
+  console.log("from the table", employeesList);
+
   const groupedData = groupByDepartment(data);
   return (
     <TableContainer component={Paper}>

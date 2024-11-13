@@ -102,12 +102,11 @@
   flex-wrap: wrap;
   gap: 5px;
   justify-content: center; */
+
   display: flex;
   flex-wrap: wrap;
-  max-height: calc(
-    45px * 5
-  ); /* Limit to 5 rows with each button's height of 40px */
-  overflow-x: auto; /* Enable horizontal scroll if there are more than 5 rows */
+  max-height: calc(45px * 5);
+  overflow-x: auto;
   padding: 5px;
   gap: 5px;
   justify-content: center;

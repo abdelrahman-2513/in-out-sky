@@ -105,7 +105,7 @@ function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
       });
   };
   function handleLogin() {
-    if (nfc === employee?.personalAttCode) {
+    if (nfc === employee?.personalCradNumber) {
       login({ id: nfc }).then((res) => {
         console.log(res);
         //setMessage("200-login");
