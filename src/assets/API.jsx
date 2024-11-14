@@ -136,3 +136,16 @@ export function getEmployeesInList(data) {
       throw error;
     });
 }
+export function getEmployeesOutList(data) {
+  console.log(data);
+  return axios
+    .get(
+      `http://zasair-001-site8.atempurl.com/api/HrAttendance/OutList?DateChick=${data.date}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}

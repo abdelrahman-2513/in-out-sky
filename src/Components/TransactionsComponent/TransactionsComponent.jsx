@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LogGrid from "../LogGrid/LogGrid";
-import { getEmployeesInList } from "../../assets/API";
+import { getEmployeesInList, getEmployeesOutList } from "../../assets/API";
 import dayjs from "dayjs";
 
 function TransactionsComponent({
@@ -8,7 +8,11 @@ function TransactionsComponent({
   message = "",
   setSelectedTransaction,
 }) {
-  const [employeesList, setEmployeesList] = useState([]);
+  const [employeesInList, setEmployeesInList] = useState([]);
+  const [employeesOutList, setEmployeesOutList] = useState([]);
+  const [selectedLogTable, setSelectedLogTable] = useState(null);
+  const [openLogTable, setOpenLogTable] = useState(false);
+
   const transactions = {
     en: {
       "": "Welcome To Sky Culinaire Check-In System",
@@ -16,24 +20,52 @@ function TransactionsComponent({
       400: "Check-In Failed",
       "200-out": "Check-Out Successful",
       "400-out": "Check-Out Failed",
+      logsTitle: "Please Select Employee Status",
+      checkedIn: "Clocked In",
+      checkedOut: "Clocked Out",
+      logTableTitleIn: "Clocked In Employees",
+      logTableTitleOut: "Clocked Out Employees",
     },
     ar: {
       "": "مرحبًا بكم في نظام تسجيل الحضور الخاص بـ Sky Culinaire",
       200: "تسجيل الدخول ناجح",
       400: "فشل تسجيل الدخول",
+      "200-out": "تسجيل الخروج ناجح",
+      "400-out": "فشل تسجيل الخروج",
+      logsTitle: "يرجى اختيار حالة الموظف",
+      checkedIn: "مُسجل حضور",
+      checkedOut: "مُسجل انصراف",
+      logTableTitleIn: "الموظفين المسجلين حضور",
+      logTableTitleOut: "الموظفين المسجلين انصراف",
     },
   };
 
   useEffect(() => {
     getEmployeesInList({ date: dayjs(new Date()).format("YYYY-MM-DD") })
       .then((res) => {
-        setEmployeesList(res);
+        setEmployeesInList(res);
+        console.log("in emp", res);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  useEffect(() => {
+    getEmployeesOutList({ date: dayjs(new Date()).format("YYYY-MM-DD") })
+      .then((res) => {
+        setEmployeesOutList(res);
+        console.log("out emp", res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  function handleTableSelection(status) {
+    setSelectedLogTable(status);
+    setOpenLogTable(true);
+  }
   return (
     <div
       className="secondary-container"
@@ -58,7 +90,31 @@ function TransactionsComponent({
         </div>
       </div>
       <div className="main-grid">
-        <LogGrid employeesList={employeesList} language={language} />
+        <div className="logs-side">
+          <p className="status-title">{transactions[language].logsTitle}</p>
+          <div className="status-btns">
+            <button
+              onClick={() => handleTableSelection("clockIn")}
+              className="list-btn"
+              style={{
+                direction: language === "en" ? "ltr" : "rtl",
+                width: "150px",
+              }}
+            >
+              {transactions[language].checkedIn}
+            </button>
+            <button
+              onClick={() => handleTableSelection("clockOut")}
+              className="list-btn"
+              style={{
+                direction: language === "en" ? "ltr" : "rtl",
+                width: "150px",
+              }}
+            >
+              {transactions[language].checkedOut}
+            </button>
+          </div>
+        </div>
         <div className="divider"></div>
 
         <div
@@ -85,6 +141,20 @@ function TransactionsComponent({
           </button>
         </div>
       </div>
+      {openLogTable && (
+        <LogGrid
+          data={
+            selectedLogTable === "clockIn" ? employeesInList : employeesOutList
+          }
+          title={
+            selectedLogTable === "clockIn"
+              ? transactions[language].logTableTitleIn
+              : transactions[language].logTableTitleOut
+          }
+          language={language}
+          onClose={() => setOpenLogTable(false)}
+        />
+      )}
     </div>
   );
 }

@@ -6,25 +6,26 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { IoIosCloseCircle } from "react-icons/io";
 
 function createData(name, department, transaction, date, time) {
   return { name, department, transaction, date, time };
 }
 
-const data = [
-  createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
-  createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
-  createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
-  createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
-  createData("Ziad Ahmed", "zas", "Clock in", "01/01/2023", "14:02"),
+// const data = [
+//   createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
+//   createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
+//   createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
+//   createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
+//   createData("Ziad Ahmed", "zas", "Clock in", "01/01/2023", "14:02"),
 
-  createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
-  createData("Ziad Ahmed", "zas", "Clock in", "01/01/2023", "14:02"),
-];
+//   createData("Ziad Ahmed", "Development", "Clock in", "01/01/2023", "14:02"),
+//   createData("Ziad Ahmed", "zas", "Clock in", "01/01/2023", "14:02"),
+// ];
 
 const groupByDepartment = (data) => {
   return data.reduce((groups, row) => {
-    const department = row.department;
+    const department = row.deparmentName;
     if (!groups[department]) {
       groups[department] = [];
     }
@@ -33,131 +34,143 @@ const groupByDepartment = (data) => {
   }, {});
 };
 
-export default function LogGrid({ language, employeesList }) {
-  console.log("from the table", employeesList);
-
-  const groupedData = groupByDepartment(data);
+// const groupedData = data.reduce((acc, employee) => {
+//   const department = employee.deparmentName;
+//   if (!acc[department]) acc[department] = [];
+//   acc[department].push(employee);
+//   return acc;
+// }, {});
+export default function LogGrid({ language, data, title, onClose }) {
+  const groupedData = data && groupByDepartment(data);
+  console.log("old", groupedData);
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 600 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell
-              sx={{ width: "20%", padding: "12px 16px", color: "#707070" }}
-            >
-              {language === "en" ? "Name" : "الاسم"}
-            </TableCell>
-            <TableCell
-              sx={{ width: "20%", padding: "12px 16px", color: "#707070" }}
-              align="left"
-            >
-              {language === "en" ? "Department" : "القسم"}
-            </TableCell>
-            <TableCell
-              sx={{ width: "20%", padding: "12px 16px", color: "#707070" }}
-              align="left"
-            >
-              {language === "en" ? "Transaction" : "العملية"}
-            </TableCell>
-            <TableCell
-              sx={{ width: "20%", padding: "12px 16px", color: "#707070" }}
-              align="left"
-            >
-              {language === "en" ? "Date" : "التاريخ"}
-            </TableCell>
-            <TableCell
-              sx={{ width: "20%", padding: "12px 16px", color: "#707070" }}
-              align="left"
-            >
-              {language === "en" ? "Time" : "الوقت"}
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.entries(groupedData).map(([department, rows]) => (
-            <React.Fragment key={department}>
-              {/* Department Header Row */}
+    <div className="dialog-overlay">
+      <div className="dialog" style={{ height: "60%" }}>
+        <div className="dialog-header" style={{ marginBottom: "10px" }}>
+          <h4>{title}</h4>
+          <IoIosCloseCircle
+            size={30}
+            className="close-button"
+            onClick={onClose}
+          />
+        </div>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 600 }} aria-label="simple table">
+            <TableHead>
               <TableRow>
                 <TableCell
-                  colSpan={5}
-                  sx={{
-                    padding: "8px 16px",
-                    fontWeight: 400,
-                    backgroundColor: "#f0f0f0",
-                  }}
+                  sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
+                  align={language === "en" ? "left" : "right"}
                 >
-                  {department}
+                  {language === "en" ? "Name" : "الاسم"}
+                </TableCell>
+                <TableCell
+                  sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
+                  align={language === "en" ? "left" : "right"}
+                >
+                  {language === "en" ? "Department" : "القسم"}
+                </TableCell>
+                <TableCell
+                  sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
+                  align={language === "en" ? "left" : "right"}
+                >
+                  {language === "en" ? "Date" : "التاريخ"}
+                </TableCell>
+                <TableCell
+                  sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
+                  align={language === "en" ? "left" : "right"}
+                >
+                  {language === "en" ? "Time" : "الوقت"}
                 </TableCell>
               </TableRow>
+            </TableHead>
+            <TableBody>
+              {Object.entries(groupedData).map(([department, employees]) => (
+                <React.Fragment key={department}>
+                  {/* Department Header Row */}
+                  <TableRow>
+                    <TableCell
+                      colSpan={4}
+                      sx={{
+                        padding: "8px 16px",
+                        fontWeight: 400,
+                        backgroundColor: "#f0f0f0",
+                      }}
+                    >
+                      {department}
+                    </TableCell>
+                  </TableRow>
 
-              {/* Rows for each department */}
-              {rows.map((row) => (
-                <TableRow
-                  key={row.name}
-                  sx={{
-                    height: 40,
-                    "&:hover": {
-                      backgroundColor: "rgba(0, 0, 0, 0.1)",
-                    },
-                  }}
-                >
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    sx={{
-                      padding: "8px 16px",
-                      lineHeight: 1,
-                      fontSize: "12px",
-                    }}
-                  >
-                    {row.name}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      padding: "8px 16px",
-                      lineHeight: 1,
-                      fontSize: "12px",
-                    }}
-                  >
-                    {row.department}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      padding: "8px 16px",
-                      lineHeight: 1,
-                      fontSize: "12px",
-                    }}
-                  >
-                    {row.transaction}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      padding: "8px 16px",
-                      lineHeight: 1,
-                      fontSize: "12px",
-                    }}
-                  >
-                    {row.date}
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    sx={{
-                      padding: "8px 16px",
-                      lineHeight: 1,
-                      fontSize: "12px",
-                    }}
-                  >
-                    {row.time}
-                  </TableCell>
-                </TableRow>
+                  {/* Rows for each employee in the department */}
+                  {employees.map((employee) => (
+                    <TableRow
+                      key={employee.personalId}
+                      sx={{
+                        height: 40,
+                        "&:hover": {
+                          backgroundColor: "rgba(0, 0, 0, 0.1)",
+                        },
+                      }}
+                    >
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        align={language === "en" ? "left" : "right"}
+                        sx={{
+                          padding: "8px 16px",
+                          lineHeight: 1,
+                          fontSize: "12px",
+                        }}
+                      >
+                        {employee.personalName}
+                      </TableCell>
+                      <TableCell
+                        align={language === "en" ? "left" : "right"}
+                        sx={{
+                          padding: "8px 16px",
+                          lineHeight: 1,
+                          fontSize: "12px",
+                        }}
+                      >
+                        {employee.deparmentName}
+                      </TableCell>
+                      <TableCell
+                        align={language === "en" ? "left" : "right"}
+                        sx={{
+                          padding: "8px 16px",
+                          lineHeight: 1,
+                          fontSize: "12px",
+                        }}
+                      >
+                        {new Date(employee.fromTime).toLocaleDateString(
+                          "en-GB"
+                        )}
+                      </TableCell>
+                      <TableCell
+                        align={language === "en" ? "left" : "right"}
+                        sx={{
+                          padding: "8px 16px",
+                          lineHeight: 1,
+                          fontSize: "12px",
+                        }}
+                      >
+                        {new Date(employee.fromTime).toLocaleTimeString(
+                          "en-GB",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                          }
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </React.Fragment>
               ))}
-            </React.Fragment>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    </div>
   );
 }

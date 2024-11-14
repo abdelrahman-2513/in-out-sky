@@ -95,7 +95,6 @@ function EmployeeList({
           {employees?.map((employee) => (
             <button
               className="list-btn"
-              style={{ direction: "rtl" }}
               //id="language-select"
               key={employee.personalId}
               onClick={() => handleEmployeeSelection(employee)}
@@ -105,7 +104,7 @@ function EmployeeList({
           ))}
         </div>
       ) : (
-        <p>{employeesTrans[language]["empty"]}</p>
+        <p style={{ marginTop: "20px" }}>{employeesTrans[language]["empty"]}</p>
       )}
       <div className="btns login-btn-container">
         {/* <button className="btn" onClick={handleCheckOut}>
