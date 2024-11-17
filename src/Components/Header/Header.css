@@ -88,8 +88,8 @@
 
 .language-tabs .active {
   display: inline-block;
-  width: 65%;
-  max-width: 150px;
+  /* width: 65%;
+  max-width: 150px; */
   min-width: fit-content;
   padding: 5px 10px;
   border-bottom: 2px solid var(--color-text-active);

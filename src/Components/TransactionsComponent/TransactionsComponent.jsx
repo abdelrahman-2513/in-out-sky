@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LogGrid from "../LogGrid/LogGrid";
 import { getEmployeesInList, getEmployeesOutList } from "../../assets/API";
+import "../Header/Header.css";
 import dayjs from "dayjs";
 
 function TransactionsComponent({
@@ -10,7 +11,7 @@ function TransactionsComponent({
 }) {
   const [employeesInList, setEmployeesInList] = useState([]);
   const [employeesOutList, setEmployeesOutList] = useState([]);
-  const [selectedLogTable, setSelectedLogTable] = useState(null);
+  const [selectedLogTable, setSelectedLogTable] = useState("clockIn");
   const [openLogTable, setOpenLogTable] = useState(false);
 
   const transactions = {
@@ -90,30 +91,48 @@ function TransactionsComponent({
         </div>
       </div>
       <div className="main-grid">
-        <div className="logs-side">
-          <p className="status-title">{transactions[language].logsTitle}</p>
-          <div className="status-btns">
-            <button
+        <div className="logs-side ">
+          {/* <p className="status-title">{transactions[language].logsTitle}</p> */}
+          <div className="status-btns language-tabs">
+            <div
+              // onClick={() => handleTableSelection("clockIn")}
               onClick={() => handleTableSelection("clockIn")}
-              className="list-btn"
+              className={` ${selectedLogTable === "clockIn" ? "active" : ""}`}
               style={{
                 direction: language === "en" ? "ltr" : "rtl",
-                width: "150px",
+                padding: "5px 10px",
               }}
             >
               {transactions[language].checkedIn}
-            </button>
-            <button
+            </div>
+            <div
+              // onClick={() => handleTableSelection("clockOut")}
               onClick={() => handleTableSelection("clockOut")}
-              className="list-btn"
+              className={` ${selectedLogTable === "clockOut" ? "active" : ""}`}
               style={{
                 direction: language === "en" ? "ltr" : "rtl",
-                width: "150px",
+                padding: "5px 10px",
+
+                //width: "100px",
               }}
             >
               {transactions[language].checkedOut}
-            </button>
+            </div>
           </div>
+          <LogGrid
+            data={
+              selectedLogTable === "clockIn"
+                ? employeesInList
+                : employeesOutList
+            }
+            title={
+              selectedLogTable === "clockIn"
+                ? transactions[language].logTableTitleIn
+                : transactions[language].logTableTitleOut
+            }
+            language={language}
+            onClose={() => setOpenLogTable(false)}
+          />
         </div>
         <div className="divider"></div>
 
@@ -141,7 +160,7 @@ function TransactionsComponent({
           </button>
         </div>
       </div>
-      {openLogTable && (
+      {/* {openLogTable && (
         <LogGrid
           data={
             selectedLogTable === "clockIn" ? employeesInList : employeesOutList
@@ -154,7 +173,7 @@ function TransactionsComponent({
           language={language}
           onClose={() => setOpenLogTable(false)}
         />
-      )}
+      )} */}
     </div>
   );
 }
