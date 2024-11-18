@@ -103,14 +103,18 @@
   gap: 5px;
   justify-content: center; */
 
-  display: flex;
-  flex-wrap: wrap;
+  width: 90vw;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: 45px;
+  gap: 5px;
+
   max-height: calc(45px * 5);
   overflow-x: auto;
   padding: 5px;
-  gap: 5px;
-  justify-content: center;
+
   margin-top: 20px;
+  direction: ltr;
 }
 .status-btns {
   display: flex;

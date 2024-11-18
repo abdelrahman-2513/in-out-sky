@@ -4,6 +4,25 @@ import { IoIosCloseCircle } from "react-icons/io";
 import { checkIn, checkOut } from "../../assets/API";
 import dayjs from "dayjs";
 import Confirmation from "../Confirmation/Confirmation";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
+import "dayjs/locale/ar"; // Arabic locale
+import "dayjs/locale/en"; // English locale (default)
+
+function formatDate(date, language) {
+  // Set the locale based on the provided language
+  dayjs.locale(language);
+
+  // Format the date
+  return dayjs(date).format("dddd D, MMMM YYYY");
+}
+function formatTime(time, language) {
+  // Set the locale based on the provided language
+  dayjs.locale(language);
+
+  // Format the date
+  return dayjs(time).format("H:mm:ss");
+}
 
 function EmployeeData({
   title,
@@ -39,11 +58,13 @@ function EmployeeData({
       time: "Time",
       checkedInBefore: "Checked In Before",
       checkedOutBefore: "Checked Out Before",
-      title: `Are you sure you want to ${
+      titleFirstLine: `Are you sure you want to ${
         selectedTransaction === "clockIn" ? "clock in" : "clock out"
-      } on ${dayjs(new Date()).format("dddd D/MMMM/YYYY")}, at ${dayjs(
-        new Date()
-      ).format("HH:mm ")}?`,
+      }  on`,
+      titleSecondLine: `${formatDate(new Date(), "en")}
+      `,
+      titleThirdLine: "at",
+      titleForthLine: `${formatTime(new Date(), "en")} `,
     },
     ar: {
       name: "الاسم",
@@ -60,11 +81,13 @@ function EmployeeData({
       time: "الوقت",
       checkedInBefore: "تم تسجيل الحضور من قبل",
       checkedOutBefore: "تم تسجيل الانصراف من قبل",
-      title: `هل أنت متأكد أنك تريد ${
+      titleFirstLine: `هل أنت متأكد أنك تريد ${
         selectedTransaction === "clockIn" ? "تسجيل الحضور" : "تسجيل الانصراف"
-      } في ${dayjs(new Date()).format("dddd D/MMMM/YYYY")} في الساعة ${dayjs(
-        new Date()
-      ).format("HH:mm ")}؟`,
+      } في`,
+      titleSecondLine: `${formatDate(new Date(), "ar")}
+      `,
+      titleThirdLine: "في",
+      titleForthLine: `${formatTime(new Date(), "ar")}`,
     },
   };
 
@@ -174,12 +197,14 @@ function EmployeeData({
     <div className="dialog-overlay" style={{ direction: direction }}>
       <div className="dialog">
         <div className="dialog-header">
-          <h4>{trns[language].title}</h4>
-          <IoIosCloseCircle
-            size={30}
-            className="close-button"
-            onClick={onClose}
-          />
+          <div className="titles">
+            <h4>{trns[language].titleFirstLine}</h4>
+            <h4 className="hightlight">{trns[language].titleSecondLine}</h4>
+            <h4>{trns[language].titleThirdLine}</h4>
+            <h4 className="hightlight">{trns[language].titleForthLine}</h4>
+          </div>
+
+          <IoClose size={30} className="close-button" onClick={onClose} />
         </div>
         <div className="dialog-content">
           <div className="dialog-row">
@@ -196,11 +221,11 @@ function EmployeeData({
           </div>
           <div className="dialog-row">
             <p>{trns[language].date} </p>
-            <p>: {dayjs(new Date()).format("dddd D/MMMM/YYYY")}</p>
+            <p>: {formatDate(new Date(), language)}</p>
           </div>
           <div className="dialog-row">
             <p>{trns[language].time} </p>
-            <p>: {dayjs(new Date()).format("HH:mm ")}</p>
+            <p>: {formatTime(new Date(), language)}</p>
           </div>
         </div>
         {/* <div className="dialog-actions">
@@ -222,8 +247,11 @@ function EmployeeData({
 
         <div
           className="dialog-actions"
-          style={{ justifyContent: "space-between" }}
+          style={{ justifyContent: "space-between", direction: "ltr" }}
         >
+          <button className="dialog-btn cancel-btn" onClick={onClose}>
+            {language === "en" ? "No" : "لا"}
+          </button>
           <button
             className="dialog-btn confirm-btn"
             id={actionClicked ? "disabled" : ""}
@@ -235,9 +263,6 @@ function EmployeeData({
             }}
           >
             {language === "en" ? "Yes" : "نعم"}
-          </button>
-          <button className="dialog-btn cancel-btn" onClick={onClose}>
-            {language === "en" ? "No" : "لا"}
           </button>
         </div>
       </div>

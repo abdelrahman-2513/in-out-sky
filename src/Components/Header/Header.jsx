@@ -16,7 +16,7 @@ function Header({ language, setLanguage, reset }) {
     setLanguage(e.target.value);
   };
 
-  const locale = language === "ar" ? "ar-EG" : "en-US";
+  const locale = language === "ar" ? "ar-EG" : "en-UK";
 
   const options = {
     year: "numeric",
