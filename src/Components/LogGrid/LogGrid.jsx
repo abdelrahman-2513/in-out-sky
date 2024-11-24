@@ -65,25 +65,34 @@ export default function LogGrid({ language, data, title, onClose }) {
         <TableHead>
           <TableRow>
             <TableCell
-              sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
+              sx={{
+                width: "50%",
+                padding: "4px 16px",
+                color: "#707070",
+                fontSize: "12px",
+              }}
               align={language === "en" ? "left" : "right"}
             >
               {language === "en" ? "Name" : "الاسم"}
             </TableCell>
             <TableCell
-              sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
-              align={language === "en" ? "left" : "right"}
-            >
-              {language === "en" ? "Department" : "القسم"}
-            </TableCell>
-            <TableCell
-              sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
+              sx={{
+                width: "25%",
+                padding: "4px 16px",
+                color: "#707070",
+                fontSize: "12px",
+              }}
               align={language === "en" ? "left" : "right"}
             >
               {language === "en" ? "Date" : "التاريخ"}
             </TableCell>
             <TableCell
-              sx={{ width: "25%", padding: "12px 16px", color: "#707070" }}
+              sx={{
+                width: "25%",
+                padding: "4px 16px",
+                color: "#707070",
+                fontSize: "12px",
+              }}
               align={language === "en" ? "left" : "right"}
             >
               {language === "en" ? "Time" : "الوقت"}
@@ -99,8 +108,9 @@ export default function LogGrid({ language, data, title, onClose }) {
                   <TableCell
                     colSpan={4}
                     sx={{
-                      padding: "8px 16px",
-                      fontWeight: 400,
+                      fontSize: "12px",
+                      padding: "4px 16px",
+                      fontWeight: "bold",
                       backgroundColor: "#f0f0f0",
                     }}
                   >
@@ -113,7 +123,7 @@ export default function LogGrid({ language, data, title, onClose }) {
                   <TableRow
                     key={employee.personalId}
                     sx={{
-                      height: 40,
+                      height: 30,
                       "&:hover": {
                         backgroundColor: "rgba(0, 0, 0, 0.1)",
                       },
@@ -124,9 +134,13 @@ export default function LogGrid({ language, data, title, onClose }) {
                       scope="row"
                       align={language === "en" ? "left" : "right"}
                       sx={{
-                        padding: "8px 16px",
+                        padding: "2px 16px",
                         lineHeight: 1,
                         fontSize: "12px",
+                        maxWidth: "150px", // Adjust the width as needed
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
                       }}
                     >
                       {employee.personalName}
@@ -134,17 +148,7 @@ export default function LogGrid({ language, data, title, onClose }) {
                     <TableCell
                       align={language === "en" ? "left" : "right"}
                       sx={{
-                        padding: "8px 16px",
-                        lineHeight: 1,
-                        fontSize: "12px",
-                      }}
-                    >
-                      {employee.deparmentName}
-                    </TableCell>
-                    <TableCell
-                      align={language === "en" ? "left" : "right"}
-                      sx={{
-                        padding: "8px 16px",
+                        padding: "2px 16px",
                         lineHeight: 1,
                         fontSize: "12px",
                       }}
@@ -154,7 +158,7 @@ export default function LogGrid({ language, data, title, onClose }) {
                     <TableCell
                       align={language === "en" ? "left" : "right"}
                       sx={{
-                        padding: "8px 16px",
+                        padding: "2px 16px",
                         lineHeight: 1,
                         fontSize: "12px",
                       }}

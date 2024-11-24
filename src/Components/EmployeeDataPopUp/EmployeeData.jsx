@@ -41,7 +41,7 @@ function EmployeeData({
   const [msg, setMsg] = useState("");
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [actionClicked, setActionClicked] = useState(false);
-  const [timeRemains, setTimeRemains] = useState(20000);
+  const [timeRemains, setTimeRemains] = useState(30000);
   const trns = {
     en: {
       name: "Name",

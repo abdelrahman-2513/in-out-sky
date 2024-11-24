@@ -256,7 +256,10 @@ function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
 
       {openDialog && (
         <EmployeeData
-          onClose={() => setOpenDialog(false)}
+          onClose={() => {
+            setOpenDialog(false);
+            reset();
+          }}
           title={language === "en" ? "Login Status" : "حالة تسجيل الدخول"}
           message={nfcMsgs[language][message] || ""}
           language={language}
