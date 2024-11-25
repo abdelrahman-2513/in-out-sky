@@ -73,6 +73,7 @@ function TransactionsComponent({
       style={{
         display: "flex",
         maxWidth: "100%",
+        height: "70vh",
         width: "100%",
         gap: "10px",
       }}
@@ -91,9 +92,9 @@ function TransactionsComponent({
         </div>
       </div>
       <div className="main-grid">
-        <div className="logs-side ">
+        <div className="logs-side" style={{ height: "100%" }}>
           {/* <p className="status-title">{transactions[language].logsTitle}</p> */}
-          <div className="status-btns language-tabs">
+          <div className="status-btns language-tabs " id="table-btns">
             <div
               // onClick={() => handleTableSelection("clockIn")}
               onClick={() => handleTableSelection("clockIn")}

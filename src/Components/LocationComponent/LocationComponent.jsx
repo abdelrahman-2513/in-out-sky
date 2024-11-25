@@ -26,7 +26,7 @@ const LocationChecker = ({
   );
 
   // Fixed location (latitude, longitude)
-  const targetLocation = { latitude: 30.097835, longitude: 31.350578 }; // Example: Cairo, Egypt
+  const targetLocation = { latitude: 30.0989905, longitude: 31.3620141 }; // Example: Cairo, Egypt
 
   // Haversine formula to calculate distance in km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
