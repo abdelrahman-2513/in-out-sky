@@ -42,7 +42,7 @@ const groupByDepartment = (data) => {
 //   acc[department].push(employee);
 //   return acc;
 // }, {});
-export default function LogGrid({ language, data, title, onClose }) {
+export default function LogGrid({ language, data, title, onClose, depsTrns }) {
   const [groupedData, setGroupedData] = useState([]);
   useEffect(() => {
     const grouped = data && groupByDepartment(data);
@@ -107,6 +107,7 @@ export default function LogGrid({ language, data, title, onClose }) {
                 <TableRow>
                   <TableCell
                     colSpan={4}
+                    align={language === "en" ? "left" : "right"}
                     sx={{
                       fontSize: "12px",
                       padding: "4px 16px",
@@ -114,7 +115,7 @@ export default function LogGrid({ language, data, title, onClose }) {
                       backgroundColor: "#f0f0f0",
                     }}
                   >
-                    {department}
+                    {depsTrns[language][department] || department}
                   </TableCell>
                 </TableRow>
 
@@ -143,7 +144,9 @@ export default function LogGrid({ language, data, title, onClose }) {
                         textOverflow: "ellipsis",
                       }}
                     >
-                      {employee.personalName}
+                      {language === "en"
+                        ? employee.personalName
+                        : employee.personalName_Ar || employee.personalName}
                     </TableCell>
                     <TableCell
                       align={language === "en" ? "left" : "right"}

@@ -28,7 +28,13 @@ const nfcMsgs = {
   },
 };
 
-function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
+function ButtonsComponent({
+  language,
+  employee,
+  selectedTransaction,
+  reset,
+  depsTrns,
+}) {
   const [nfc, setNfc] = useState("");
   const [checkIn, setCheckIn] = useState(false);
   const [checkOut, setCheckOut] = useState(false);
@@ -256,6 +262,7 @@ function ButtonsComponent({ language, employee, selectedTransaction, reset }) {
 
       {openDialog && (
         <EmployeeData
+          depsTrns={depsTrns}
           onClose={() => {
             setOpenDialog(false);
             reset();

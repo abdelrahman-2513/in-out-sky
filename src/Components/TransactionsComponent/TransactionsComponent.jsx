@@ -8,6 +8,7 @@ function TransactionsComponent({
   language,
   message = "",
   setSelectedTransaction,
+  depsTrns,
 }) {
   const [employeesInList, setEmployeesInList] = useState([]);
   const [employeesOutList, setEmployeesOutList] = useState([]);
@@ -28,7 +29,7 @@ function TransactionsComponent({
       logTableTitleOut: "Clocked Out Employees",
     },
     ar: {
-      "": "مرحبًا بكم في نظام تسجيل الحضور الخاص بـ Sky Culinaire",
+      "": "مرحبًا بكم في نظام تسجيل الحضور الخاص بسكاي كولينير",
       200: "تسجيل الدخول ناجح",
       400: "فشل تسجيل الدخول",
       "200-out": "تسجيل الخروج ناجح",
@@ -121,6 +122,7 @@ function TransactionsComponent({
             </div>
           </div>
           <LogGrid
+            depsTrns={depsTrns}
             data={
               selectedLogTable === "clockIn"
                 ? employeesInList

@@ -96,7 +96,7 @@ export function getDepartments() {
 }
 
 export function getInEmployees(data) {
-  console.log(data);
+  console.log("from the in api", data);
   return axios
     .get(
       `http://zasair-001-site8.atempurl.com/api/HrAttendance/EmployeeIn?DepId=${data.departmentId}&DateChick=${data.date}`
@@ -124,7 +124,6 @@ export function getOutEmployees(data) {
 }
 
 export function getEmployeesInList(data) {
-  console.log(data);
   return axios
     .get(
       `http://zasair-001-site8.atempurl.com/api/HrAttendance/InList?DateChick=${data.date}`
@@ -137,7 +136,6 @@ export function getEmployeesInList(data) {
     });
 }
 export function getEmployeesOutList(data) {
-  console.log(data);
   return axios
     .get(
       `http://zasair-001-site8.atempurl.com/api/HrAttendance/OutList?DateChick=${data.date}`

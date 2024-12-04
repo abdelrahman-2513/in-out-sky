@@ -91,15 +91,21 @@ function EmployeeList({
         //     </div>
         //   ))}
         // </div>
-        <div className="content-btns-container">
+        <div
+          className="content-btns-container"
+          style={{ direction: language === "ar" ? "rtl" : "ltr" }}
+        >
           {employees?.map((employee) => (
             <button
               className="list-btn"
               //id="language-select"
               key={employee.personalId}
               onClick={() => handleEmployeeSelection(employee)}
+              style={{ textAlign: language === "ar" ? "right" : "left" }}
             >
-              {employee.personalName}
+              {language === "en"
+                ? employee.personalName
+                : employee.personalNameAr || employee.personalName}
             </button>
           ))}
         </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDepartments } from "../../assets/API";
 
-function DepartmentComponent({ language, setDeratment, reset }) {
+function DepartmentComponent({ language, setDeratment, reset, depsTrns }) {
   const [depatrments, setDepatrments] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const depatrmentsTrans = {
@@ -62,7 +62,10 @@ function DepartmentComponent({ language, setDeratment, reset }) {
       {isLoading ? (
         <span className="loader"></span>
       ) : depatrments && depatrments.length > 0 ? (
-        <div className="content-btns-container">
+        <div
+          className="content-btns-container"
+          style={{ direction: language === "ar" ? "rtl" : "ltr" }}
+        >
           {/* <select onChange={handleDepSelection}>
             <option id="language-select">
               {language === "en"
@@ -87,8 +90,10 @@ function DepartmentComponent({ language, setDeratment, reset }) {
               key={department.departmentId}
               onClick={(e) => handleDepSelection(e)}
               value={[department.departmentId, department.departmentName]}
+              style={{ direction: language === "ar" ? "rtl" : "ltr" }}
             >
-              {department.departmentName}
+              {depsTrns[language][department.departmentName] ||
+                department.departmentName}
             </button>
           ))}
         </div>

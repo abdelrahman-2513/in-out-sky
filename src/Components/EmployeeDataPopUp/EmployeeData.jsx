@@ -36,6 +36,7 @@ function EmployeeData({
   reset,
   nfc,
   selectedTransaction,
+  depsTrns,
 }) {
   const [state, setState] = useState(null);
   const [msg, setMsg] = useState("");
@@ -209,11 +210,20 @@ function EmployeeData({
         <div className="dialog-content">
           <div className="dialog-row">
             <p> {trns[language].name} </p>
-            <p>: {Employee?.personalName}</p>
+            <p>
+              :{" "}
+              {language === "en"
+                ? Employee?.personalName
+                : Employee?.personalName || Employee?.personalName}
+            </p>
           </div>
           <div className="dialog-row">
             <p>{trns[language].department} </p>
-            <p>: {Employee?.deparmentName}</p>
+            <p>
+              :{" "}
+              {depsTrns[language][Employee?.deparmentName] ||
+                Employee?.deparmentName}
+            </p>
           </div>
           <div className="dialog-row">
             <p>{trns[language].job} </p>

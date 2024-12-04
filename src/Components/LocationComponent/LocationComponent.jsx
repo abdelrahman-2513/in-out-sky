@@ -6,11 +6,15 @@ const trns = {
     locationError: "Please Allow the location permission.",
     locationAway:
       " You are not allowed to clock in/out right now, Please try again within the permitted area.",
+    caution:
+      "Note that you won't be able to clock in/out if you denied the location permission.",
   },
   ar: {
     locationError: "يرجى السماح بالموقع.",
     locationAway:
       "ليس لديك الصلاحيةلتسجيل دخول/خروج حاليا، يرجى المحاولة في المنطقة المسموح بها.",
+    caution:
+      "ملاحظة: لن تتمكن من تسجيل دخول/خروج إذا قمت بإلغاء السماح بالموقع.",
   },
 };
 
@@ -25,9 +29,7 @@ const LocationChecker = ({
     trns[language].locationError
   );
 
-  // Fixed location (latitude, longitude)
-  const targetLocation = { latitude: 30.0989905, longitude: 31.3620141 }; // Example: Cairo, Egypt
-
+  const targetLocation = { latitude: 30.0926292, longitude: 31.3655877 };
   // Haversine formula to calculate distance in km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const toRadians = (degrees) => (degrees * Math.PI) / 180;
@@ -102,34 +104,52 @@ const LocationChecker = ({
   return (
     <>
       {!userLocation && (
-        <div
-          className="secondary-container"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "40px",
-          }}
-        >
-          <div className="message">
-            {language === "en" ? "Location not allowed" : "الموقع غير مسموح به"}
+        <>
+          <div
+            className="secondary-container"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "40px",
+              width: "650px",
+            }}
+          >
+            <div className="message">
+              {language === "en"
+                ? "Location not allowed"
+                : "الموقع غير مسموح به"}
+            </div>
+            {errorMessage && (
+              <p
+                style={{
+                  textAlign: "center",
+                  textWrap: "balance",
+                  maxWidth: "450px",
+                }}
+              >
+                {errorMessage}
+              </p>
+            )}
+            <button className="btn" onClick={checkLocation}>
+              {language === "en" ? "Try again" : "حاول مرة اخرى"}
+            </button>
           </div>
-          {errorMessage && (
-            <p
-              style={{
-                textAlign: "center",
-                textWrap: "balance",
-                maxWidth: "450px",
-              }}
-            >
-              {errorMessage}
-            </p>
-          )}
-          <button className="btn" onClick={checkLocation}>
-            {language === "en" ? "Try again" : "حاول مرة اخرى"}
-          </button>
-        </div>
+          <div
+            className="secondary-container"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "40px",
+              width: "650px",
+            }}
+          >
+            {trns[language].caution}
+          </div>
+        </>
       )}
       {userLocation && !isWithinRadius && (
         <div
