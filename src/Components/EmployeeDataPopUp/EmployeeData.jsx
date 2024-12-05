@@ -37,6 +37,7 @@ function EmployeeData({
   nfc,
   selectedTransaction,
   depsTrns,
+  jobsTrns,
 }) {
   const [state, setState] = useState(null);
   const [msg, setMsg] = useState("");
@@ -227,7 +228,9 @@ function EmployeeData({
           </div>
           <div className="dialog-row">
             <p>{trns[language].job} </p>
-            <p>: {Employee?.jopName}</p>
+            <p>
+              : {jobsTrns[language][Employee?.jopName] || Employee?.jopName}
+            </p>
           </div>
           <div className="dialog-row">
             <p>{trns[language].date} </p>

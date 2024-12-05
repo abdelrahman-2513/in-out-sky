@@ -147,3 +147,13 @@ export function getEmployeesOutList(data) {
       throw error;
     });
 }
+export function getJobsList() {
+  return axios
+    .get(`http://zasair-001-site8.atempurl.com/api/HR/Coding/HrLkpJops`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}

@@ -34,6 +34,7 @@ function ButtonsComponent({
   selectedTransaction,
   reset,
   depsTrns,
+  jobsTrns,
 }) {
   const [nfc, setNfc] = useState("");
   const [checkIn, setCheckIn] = useState(false);
@@ -263,6 +264,7 @@ function ButtonsComponent({
       {openDialog && (
         <EmployeeData
           depsTrns={depsTrns}
+          jobsTrns={jobsTrns}
           onClose={() => {
             setOpenDialog(false);
             reset();
