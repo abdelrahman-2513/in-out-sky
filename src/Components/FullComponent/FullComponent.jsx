@@ -1,14 +1,11 @@
-import "./FullComponent.css";
-import DateComponent from "../DateComponent/DateComponent";
-import Header from "../Header/Header";
+import { useState } from "react";
 import ButtonsComponent from "../ButtonsComponent/ButtonsComponent";
-import { useEffect, useState } from "react";
-import WelcomeComponent from "../WelcomeComponent/WelcomeComponent";
-import TransactionsComponent from "../TransactionsComponent/TransactionsComponent";
+import DateComponent from "../DateComponent/DateComponent";
 import DepartmentComponent from "../DepartmentComponent/DepartmentComponent";
 import EmployeeList from "../EmployeeList/EmployeeList";
-import LocationChecker from "../LocationComponent/LocationComponent";
-import { getJobsList } from "../../assets/API";
+import Header from "../Header/Header";
+import TransactionsComponent from "../TransactionsComponent/TransactionsComponent";
+import "./FullComponent.css";
 
 function FullComponent({
   userLocation,
@@ -198,45 +195,35 @@ function FullComponent({
       <Header reset={reset} language={language} setLanguage={setLanguage} />
       <DateComponent language={language} />
       {/* <WelcomeComponent language={language} /> */}
-      {userLocation && isWithinRadius ? (
-        employee ? (
-          <ButtonsComponent
-            selectedTransaction={selectedTransaction}
-            employee={employee}
-            language={language}
-            reset={reset}
-            depsTrns={depsTrns}
-            jobsTrns={jobsTrns}
-          />
-        ) : deparment ? (
-          <EmployeeList
-            setEmployee={setEmployee}
-            language={language}
-            department={deparment}
-            reset={reset}
-            transaction={selectedTransaction}
-          />
-        ) : !selectedTransaction ? (
-          <TransactionsComponent
-            setSelectedTransaction={setSelectedTransaction}
-            language={language}
-            depsTrns={depsTrns}
-          />
-        ) : (
-          <DepartmentComponent
-            language={language}
-            setDeratment={setDepartment}
-            reset={reset}
-            depsTrns={depsTrns}
-          />
-        )
-      ) : (
-        <LocationChecker
-          setUserLocation={setUserLocation}
+      {employee ? (
+        <ButtonsComponent
+          selectedTransaction={selectedTransaction}
+          employee={employee}
           language={language}
-          userLocation={userLocation}
-          setIsWithinRadius={setIsWithinRadius}
-          isWithinRadius={isWithinRadius}
+          reset={reset}
+          depsTrns={depsTrns}
+          jobsTrns={jobsTrns}
+        />
+      ) : deparment ? (
+        <EmployeeList
+          setEmployee={setEmployee}
+          language={language}
+          department={deparment}
+          reset={reset}
+          transaction={selectedTransaction}
+        />
+      ) : !selectedTransaction ? (
+        <TransactionsComponent
+          setSelectedTransaction={setSelectedTransaction}
+          language={language}
+          depsTrns={depsTrns}
+        />
+      ) : (
+        <DepartmentComponent
+          language={language}
+          setDeratment={setDepartment}
+          reset={reset}
+          depsTrns={depsTrns}
         />
       )}
     </div>
@@ -244,3 +231,53 @@ function FullComponent({
 }
 
 export default FullComponent;
+
+//Location Check
+// return (
+//   <div className="main-container" style={{ direction }}>
+//     <Header reset={reset} language={language} setLanguage={setLanguage} />
+//     <DateComponent language={language} />
+//     {/* <WelcomeComponent language={language} /> */}
+//     {userLocation && isWithinRadius ? (
+//       employee ? (
+//         <ButtonsComponent
+//           selectedTransaction={selectedTransaction}
+//           employee={employee}
+//           language={language}
+//           reset={reset}
+//           depsTrns={depsTrns}
+//           jobsTrns={jobsTrns}
+//         />
+//       ) : deparment ? (
+//         <EmployeeList
+//           setEmployee={setEmployee}
+//           language={language}
+//           department={deparment}
+//           reset={reset}
+//           transaction={selectedTransaction}
+//         />
+//       ) : !selectedTransaction ? (
+//         <TransactionsComponent
+//           setSelectedTransaction={setSelectedTransaction}
+//           language={language}
+//           depsTrns={depsTrns}
+//         />
+//       ) : (
+//         <DepartmentComponent
+//           language={language}
+//           setDeratment={setDepartment}
+//           reset={reset}
+//           depsTrns={depsTrns}
+//         />
+//       )
+//     ) : (
+//       <LocationChecker
+//         setUserLocation={setUserLocation}
+//         language={language}
+//         userLocation={userLocation}
+//         setIsWithinRadius={setIsWithinRadius}
+//         isWithinRadius={isWithinRadius}
+//       />
+//     )}
+//   </div>
+// );

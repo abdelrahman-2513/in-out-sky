@@ -112,9 +112,9 @@ function ButtonsComponent({
       });
   };
   function handleLogin() {
-    if (nfc === employee?.personalCradNumber) {
+    if (nfc === employee?.cardNumber) {
       login({ id: nfc }).then((res) => {
-        console.log(res);
+        console.log("from login", res);
         //setMessage("200-login");
         setEmployeeData(res);
         setOpenDialog(true);
@@ -123,6 +123,7 @@ function ButtonsComponent({
         }, 2000);
       });
     } else {
+      console.log(nfc, employee?.personalCradNumber);
       setMessage("400-login");
       setTimeout(() => {
         setMessage("");

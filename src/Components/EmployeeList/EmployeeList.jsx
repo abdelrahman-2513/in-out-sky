@@ -1,6 +1,6 @@
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { getInEmployees, getOutEmployees } from "../../assets/API";
-import dayjs from "dayjs";
 import "./EmployeeList.css";
 function EmployeeList({
   department,

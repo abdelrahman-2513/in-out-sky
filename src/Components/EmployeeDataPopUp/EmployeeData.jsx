@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import "./EmployeeData.css";
-import { IoIosCloseCircle } from "react-icons/io";
-import { checkIn, checkOut } from "../../assets/API";
 import dayjs from "dayjs";
-import Confirmation from "../Confirmation/Confirmation";
-import { IoIosCloseCircleOutline } from "react-icons/io";
-import { IoClose } from "react-icons/io5";
 import "dayjs/locale/ar"; // Arabic locale
 import "dayjs/locale/en"; // English locale (default)
+import React, { useEffect, useState } from "react";
+import { IoClose } from "react-icons/io5";
+import { checkIn, checkOut } from "../../assets/API";
+import Confirmation from "../Confirmation/Confirmation";
+import "./EmployeeData.css";
 
 function formatDate(date, language) {
   // Set the locale based on the provided language
@@ -22,6 +20,14 @@ function formatTime(time, language) {
 
   // Format the date
   return dayjs(time).format("H:mm:ss");
+}
+
+function getDateTime() {
+  const arabicDate = formatDate(new Date(), "ar");
+  const arabicTime = formatTime(new Date(), "ar");
+  const englishDate = formatDate(new Date(), "en");
+  const englishTime = formatTime(new Date(), "en");
+  return { arabicDate, arabicTime, englishDate, englishTime };
 }
 
 function EmployeeData({
@@ -39,11 +45,17 @@ function EmployeeData({
   depsTrns,
   jobsTrns,
 }) {
+  const [dateTime, setDateTime] = useState();
   const [state, setState] = useState(null);
   const [msg, setMsg] = useState("");
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [actionClicked, setActionClicked] = useState(false);
   const [timeRemains, setTimeRemains] = useState(30000);
+  const [selectedShift, setSelectedShift] = useState(null);
+  useEffect(() => {
+    const { arabicDate, arabicTime, englishDate, englishTime } = getDateTime();
+    setDateTime({ arabicDate, arabicTime, englishDate, englishTime });
+  }, []);
   const trns = {
     en: {
       name: "Name",
@@ -58,15 +70,16 @@ function EmployeeData({
       "out-400": "Check Out Failed",
       date: "Date",
       time: "Time",
+      shift: "Shift",
       checkedInBefore: "Checked In Before",
       checkedOutBefore: "Checked Out Before",
-      titleFirstLine: `Are you sure you want to ${
-        selectedTransaction === "clockIn" ? "clock in" : "clock out"
-      }  on`,
-      titleSecondLine: `${formatDate(new Date(), "en")}
+      titleFirstLine: `Are You Sure You Want To ${
+        selectedTransaction === "clockIn" ? "Clock In" : "Clock Out"
+      }  On`,
+      titleSecondLine: `${dateTime?.englishDate}
       `,
-      titleThirdLine: "at",
-      titleForthLine: `${formatTime(new Date(), "en")} `,
+      titleThirdLine: "At",
+      titleForthLine: `${dateTime?.englishTime} `,
     },
     ar: {
       name: "الاسم",
@@ -81,24 +94,33 @@ function EmployeeData({
       "out-400": "فشل تسجيل الانصراف",
       date: "التاريخ",
       time: "الوقت",
+      shift: "الفترة",
       checkedInBefore: "تم تسجيل الحضور من قبل",
       checkedOutBefore: "تم تسجيل الانصراف من قبل",
       titleFirstLine: `هل أنت متأكد أنك تريد ${
         selectedTransaction === "clockIn" ? "تسجيل الحضور" : "تسجيل الانصراف"
       } في`,
-      titleSecondLine: `${formatDate(new Date(), "ar")}
+      titleSecondLine: `${dateTime?.arabicDate}
       `,
       titleThirdLine: "في",
-      titleForthLine: `${formatTime(new Date(), "ar")}`,
+      titleForthLine: `${dateTime?.arabicTime} `,
     },
   };
 
   const handleCheckIn = () => {
+    console.log("from check in data", {
+      vCardNumber: nfc,
+      //date: dayjs(new Date()).format("YYYY-MM-DD"),
+      attDateTime: dayjs(new Date()).format("HH:mm"),
+      //attDate: dayjs(new Date()).format("YYYY-MM-DD"),
+      attExpectedID: selectedShift?.attExpectedID,
+    });
     checkIn({
       vCardNumber: nfc,
       //date: dayjs(new Date()).format("YYYY-MM-DD"),
-      attDateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      attDate: dayjs(new Date()).format("YYYY-MM-DD"),
+      attDateTime: dayjs(new Date()).format("HH:mm"),
+      //attDate: dayjs(new Date()).format("YYYY-MM-DD"),
+      attExpectedID: selectedShift?.attExpectedID,
     })
       .then((res) => {
         setMsg(trns[language][`in-200`]);
@@ -128,11 +150,13 @@ function EmployeeData({
   };
 
   const handleCheckOut = () => {
+    console.log("clock out  emp", Employee);
     checkOut({
       vCardNumber: nfc,
       //date: dayjs(new Date()).format("YYYY-MM-DD"),
-      attDateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      attDate: dayjs(new Date()).format("YYYY-MM-DD"),
+      attDateTime: dayjs(new Date()).format("HH:mm"),
+      attExpectedID: Employee?.openShifID,
+      //attDate: dayjs(new Date()).format("YYYY-MM-DD"),
     })
       .then((res) => {
         setMsg(trns[language][`out-200`]);
@@ -238,14 +262,45 @@ function EmployeeData({
           </div>
           <div className="dialog-row">
             <p>{trns[language].time} </p>
-            <p>: {formatTime(new Date(), language)}</p>
+            <p>: {trns[language].titleForthLine}</p>
           </div>
+
+          {selectedTransaction === "clockIn" && (
+            <div className="dialog-row">
+              <p>{trns[language].shift} </p>
+              <div
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <span>:</span>
+                {Employee?._shiftarray?.map((shift) => (
+                  <div
+                    key={shift?.shiftID}
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      alignItems: "center",
+                    }}
+                    onClick={() => setSelectedShift(shift)}
+                  >
+                    <input
+                      type="radio"
+                      checked={shift?.shiftID === selectedShift?.shiftID} // Fixed comparison
+                      style={{ width: "15px", height: "15px" }}
+                      readOnly // Prevents React warnings about uncontrolled inputs
+                    />
+                    <p>{shift?.shiftName}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         {/* <div className="dialog-actions">
           <button className="btn " onClick={onClose}>
             Close
           </button>
         </div> */}
+
         <div className="feedback">
           {msg && (
             <p
@@ -267,7 +322,12 @@ function EmployeeData({
           </button>
           <button
             className="dialog-btn confirm-btn"
-            id={actionClicked ? "disabled" : ""}
+            id={
+              actionClicked ||
+              (selectedTransaction === "clockIn" && !selectedShift)
+                ? "disabled"
+                : ""
+            }
             onClick={() => {
               if (actionClicked) return;
               setActionClicked(true);

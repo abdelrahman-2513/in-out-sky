@@ -19,7 +19,10 @@ export function takeAction(data) {
 }
 
 export function login(data) {
-  console.log("from login req", data.id);
+  console.log(
+    "from login req",
+    `http://zasair-001-site8.atempurl.com/api/HrAttendance/Login?vCardNumber=${data.id}`
+  );
   return axios
     .get(
       `http://zasair-001-site8.atempurl.com/api/HrAttendance/Login?vCardNumber=${data.id}`
@@ -41,9 +44,7 @@ export function checkIn(data) {
     redirect: "follow",
   };
   console.log("check in data", data);
-  console.log(
-    "http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckIn"
-  );
+
   return axios
     .post(
       `http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckIn`,
@@ -116,6 +117,7 @@ export function getOutEmployees(data) {
       `http://zasair-001-site8.atempurl.com/api/HrAttendance/EmployeeOut?DepId=${data.departmentId}&DateChick=${data.date}`
     )
     .then((response) => {
+      console.log(response.data);
       return response.data;
     })
     .catch((error) => {

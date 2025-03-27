@@ -84,7 +84,7 @@ export default function LogGrid({ language, data, title, onClose, depsTrns }) {
               }}
               align={language === "en" ? "left" : "right"}
             >
-              {language === "en" ? "Date" : "التاريخ"}
+              {language === "en" ? "Time" : "الوقت"}
             </TableCell>
             <TableCell
               sx={{
@@ -95,7 +95,7 @@ export default function LogGrid({ language, data, title, onClose, depsTrns }) {
               }}
               align={language === "en" ? "left" : "right"}
             >
-              {language === "en" ? "Time" : "الوقت"}
+              {language === "en" ? "Shift" : "فترة"}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -156,7 +156,7 @@ export default function LogGrid({ language, data, title, onClose, depsTrns }) {
                         fontSize: "12px",
                       }}
                     >
-                      {new Date(employee.fromTime).toLocaleDateString("en-GB")}
+                      {employee?.fromTime?.slice(0, 5) || "-"}
                     </TableCell>
                     <TableCell
                       align={language === "en" ? "left" : "right"}
@@ -166,11 +166,7 @@ export default function LogGrid({ language, data, title, onClose, depsTrns }) {
                         fontSize: "12px",
                       }}
                     >
-                      {new Date(employee.fromTime).toLocaleTimeString("en-GB", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: false,
-                      })}
+                      {employee?.shiftName}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -183,7 +179,7 @@ export default function LogGrid({ language, data, title, onClose, depsTrns }) {
                 colSpan={12}
               >
                 {language === "en"
-                  ? "No data available yet!"
+                  ? "No Data Available Yet!"
                   : "لا يوجد بيانات"}
               </TableCell>
             </TableRow>

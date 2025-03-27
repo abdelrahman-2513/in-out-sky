@@ -29,7 +29,7 @@ const LocationChecker = ({
     trns[language].locationError
   );
 
-  const targetLocation = { latitude: 30.0926292, longitude: 31.3655877 };
+  const targetLocation = { latitude: 30.0899724, longitude: 31.36723 };
   // Haversine formula to calculate distance in km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const toRadians = (degrees) => (degrees * Math.PI) / 180;
