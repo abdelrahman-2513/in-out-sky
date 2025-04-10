@@ -96,6 +96,26 @@
   font-weight: bold;
 }
 
+.disabled-btn {
+  pointer-events: none;
+  background-color: #6c757d;
+  opacity: 0.5;
+}
+
+.confirm-btn {
+  background-color: #198754;
+}
+.confirm-btn:hover {
+  background-color: #198754;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+}
+.cancel-btn:hover {
+  background-color: #dc3545;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0; /* Start invisible */

@@ -5,6 +5,7 @@ import DepartmentComponent from "../DepartmentComponent/DepartmentComponent";
 import EmployeeList from "../EmployeeList/EmployeeList";
 import Header from "../Header/Header";
 import TransactionsComponent from "../TransactionsComponent/TransactionsComponent";
+import LocationChecker from "../LocationComponent/LocationComponent";
 import "./FullComponent.css";
 
 function FullComponent({
@@ -228,56 +229,56 @@ function FullComponent({
       )}
     </div>
   );
+
+  //Location Check
+  // return (
+  //   <div className="main-container" style={{ direction }}>
+  //     <Header reset={reset} language={language} setLanguage={setLanguage} />
+  //     <DateComponent language={language} />
+  //     {/* <WelcomeComponent language={language} /> */}
+  //     {userLocation && isWithinRadius ? (
+  //       employee ? (
+  //         <ButtonsComponent
+  //           selectedTransaction={selectedTransaction}
+  //           employee={employee}
+  //           language={language}
+  //           reset={reset}
+  //           depsTrns={depsTrns}
+  //           jobsTrns={jobsTrns}
+  //         />
+  //       ) : deparment ? (
+  //         <EmployeeList
+  //           setEmployee={setEmployee}
+  //           language={language}
+  //           department={deparment}
+  //           reset={reset}
+  //           transaction={selectedTransaction}
+  //         />
+  //       ) : !selectedTransaction ? (
+  //         <TransactionsComponent
+  //           setSelectedTransaction={setSelectedTransaction}
+  //           language={language}
+  //           depsTrns={depsTrns}
+  //         />
+  //       ) : (
+  //         <DepartmentComponent
+  //           language={language}
+  //           setDeratment={setDepartment}
+  //           reset={reset}
+  //           depsTrns={depsTrns}
+  //         />
+  //       )
+  //     ) : (
+  //       <LocationChecker
+  //         setUserLocation={setUserLocation}
+  //         language={language}
+  //         userLocation={userLocation}
+  //         setIsWithinRadius={setIsWithinRadius}
+  //         isWithinRadius={isWithinRadius}
+  //       />
+  //     )}
+  //   </div>
+  // );
 }
 
 export default FullComponent;
-
-//Location Check
-// return (
-//   <div className="main-container" style={{ direction }}>
-//     <Header reset={reset} language={language} setLanguage={setLanguage} />
-//     <DateComponent language={language} />
-//     {/* <WelcomeComponent language={language} /> */}
-//     {userLocation && isWithinRadius ? (
-//       employee ? (
-//         <ButtonsComponent
-//           selectedTransaction={selectedTransaction}
-//           employee={employee}
-//           language={language}
-//           reset={reset}
-//           depsTrns={depsTrns}
-//           jobsTrns={jobsTrns}
-//         />
-//       ) : deparment ? (
-//         <EmployeeList
-//           setEmployee={setEmployee}
-//           language={language}
-//           department={deparment}
-//           reset={reset}
-//           transaction={selectedTransaction}
-//         />
-//       ) : !selectedTransaction ? (
-//         <TransactionsComponent
-//           setSelectedTransaction={setSelectedTransaction}
-//           language={language}
-//           depsTrns={depsTrns}
-//         />
-//       ) : (
-//         <DepartmentComponent
-//           language={language}
-//           setDeratment={setDepartment}
-//           reset={reset}
-//           depsTrns={depsTrns}
-//         />
-//       )
-//     ) : (
-//       <LocationChecker
-//         setUserLocation={setUserLocation}
-//         language={language}
-//         userLocation={userLocation}
-//         setIsWithinRadius={setIsWithinRadius}
-//         isWithinRadius={isWithinRadius}
-//       />
-//     )}
-//   </div>
-// );

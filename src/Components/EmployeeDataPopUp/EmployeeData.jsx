@@ -321,13 +321,18 @@ function EmployeeData({
             {language === "en" ? "No" : "لا"}
           </button>
           <button
-            className="dialog-btn confirm-btn"
-            id={
+            className={`dialog-btn confirm-btn ${
               actionClicked ||
               (selectedTransaction === "clockIn" && !selectedShift)
-                ? "disabled"
+                ? "disabled-btn"
                 : ""
-            }
+            }`}
+            // id={
+            //   actionClicked ||
+            //   (selectedTransaction === "clockIn" && !selectedShift)
+            //     ? "disabled"
+            //     : ""
+            // }
             onClick={() => {
               if (actionClicked) return;
               setActionClicked(true);

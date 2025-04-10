@@ -29,7 +29,7 @@ const LocationChecker = ({
     trns[language].locationError
   );
 
-  const targetLocation = { latitude: 30.0899724, longitude: 31.36723 };
+  const targetLocation = { latitude: 30.0975342, longitude: 31.357011 };
   // Haversine formula to calculate distance in km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const toRadians = (degrees) => (degrees * Math.PI) / 180;
@@ -64,14 +64,14 @@ const LocationChecker = ({
 
           console.log({
             distanceInKm: distance,
-            isWithinRadius: distance <= 0.05,
+            isWithinRadius: distance <= 1,
             userLat,
             userLon,
             targetLat: targetLocation.latitude,
             targetLon: targetLocation.longitude,
           });
-
-          setIsWithinRadius(Boolean(distance <= 0.05)); // Set radius condition
+          //0.05
+          setIsWithinRadius(Boolean(distance <= 1)); // Set radius condition
         },
         (error) => {
           switch (error.code) {
