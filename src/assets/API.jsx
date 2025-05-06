@@ -8,7 +8,7 @@ export function takeAction(data) {
 
   return axios
     .post(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckIn?vCardNumber=${data.cardId}&LogDate=${data.date}&AttDateTime=${data.dateTime}&CheckInKind=${data.kind}`
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/AttendanceCheckIn?vCardNumber=${data.cardId}&LogDate=${data.date}&AttDateTime=${data.dateTime}&CheckInKind=${data.kind}`
     )
     .then((response) => {
       return response.data;
@@ -21,11 +21,11 @@ export function takeAction(data) {
 export function login(data) {
   console.log(
     "from login req",
-    `http://zasair-001-site8.atempurl.com/api/HrAttendance/Login?vCardNumber=${data.id}`
+    `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/Login?vCardNumber=${data.id}`
   );
   return axios
     .get(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/Login?vCardNumber=${data.id}`
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/Login?vCardNumber=${data.id}`
     )
     .then((response) => {
       return response.data;
@@ -47,7 +47,7 @@ export function checkIn(data) {
 
   return axios
     .post(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckIn`,
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/AttendanceCheckIn`,
       data
     )
     .then((response) => {
@@ -71,7 +71,7 @@ export function checkOut(data) {
   console.log("Chick out data", data);
   return axios
     .post(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/AttendanceCheckOut`,
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/AttendanceCheckOut`,
       { ...data },
       requestOptions
     )
@@ -87,7 +87,9 @@ export function checkOut(data) {
 
 export function getDepartments() {
   return axios
-    .get(`http://zasair-001-site8.atempurl.com/api/HrAttendance/Departments`)
+    .get(
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/Departments`
+    )
     .then((response) => {
       return response.data;
     })
@@ -100,7 +102,7 @@ export function getInEmployees(data) {
   console.log("from the in api", data);
   return axios
     .get(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/EmployeeIn?DepId=${data.departmentId}&DateChick=${data.date}`
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/EmployeeIn?DepId=${data.departmentId}&DateChick=${data.date}`
     )
     .then((response) => {
       return response.data;
@@ -114,7 +116,7 @@ export function getOutEmployees(data) {
   console.log(data);
   return axios
     .get(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/EmployeeOut?DepId=${data.departmentId}&DateChick=${data.date}`
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/EmployeeOut?DepId=${data.departmentId}&DateChick=${data.date}`
     )
     .then((response) => {
       console.log(response.data);
@@ -128,7 +130,7 @@ export function getOutEmployees(data) {
 export function getEmployeesInList(data) {
   return axios
     .get(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/InList?DateChick=${data.date}`
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/InList?DateChick=${data.date}`
     )
     .then((response) => {
       return response.data;
@@ -140,7 +142,7 @@ export function getEmployeesInList(data) {
 export function getEmployeesOutList(data) {
   return axios
     .get(
-      `http://zasair-001-site8.atempurl.com/api/HrAttendance/OutList?DateChick=${data.date}`
+      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/OutList?DateChick=${data.date}`
     )
     .then((response) => {
       return response.data;
@@ -151,7 +153,7 @@ export function getEmployeesOutList(data) {
 }
 export function getJobsList() {
   return axios
-    .get(`http://zasair-001-site8.atempurl.com/api/HR/Coding/HrLkpJops`)
+    .get(`https://apiskyculinaire.zarkani-group.com/api/HR/Coding/HrLkpJops`)
     .then((response) => {
       return response.data;
     })
