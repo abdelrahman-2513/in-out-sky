@@ -1,4 +1,5 @@
 import axios from "axios";
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export function takeAction(data) {
   const requestOptions = {
@@ -8,7 +9,7 @@ export function takeAction(data) {
 
   return axios
     .post(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/AttendanceCheckIn?vCardNumber=${data.cardId}&LogDate=${data.date}&AttDateTime=${data.dateTime}&CheckInKind=${data.kind}`
+      `${baseURL}/api/HrAttendance/AttendanceCheckIn?vCardNumber=${data.cardId}&LogDate=${data.date}&AttDateTime=${data.dateTime}&CheckInKind=${data.kind}`
     )
     .then((response) => {
       return response.data;
@@ -21,12 +22,10 @@ export function takeAction(data) {
 export function login(data) {
   console.log(
     "from login req",
-    `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/Login?vCardNumber=${data.id}`
+    `${baseURL}/api/HrAttendance/Login?vCardNumber=${data.id}`
   );
   return axios
-    .get(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/Login?vCardNumber=${data.id}`
-    )
+    .get(`${baseURL}/api/HrAttendance/Login?vCardNumber=${data.id}`)
     .then((response) => {
       return response.data;
     })
@@ -46,10 +45,7 @@ export function checkIn(data) {
   console.log("check in data", data);
 
   return axios
-    .post(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/AttendanceCheckIn`,
-      data
-    )
+    .post(`${baseURL}/api/HrAttendance/AttendanceCheckIn`, data)
     .then((response) => {
       console.log(response);
       return response.data;
@@ -71,7 +67,7 @@ export function checkOut(data) {
   console.log("Chick out data", data);
   return axios
     .post(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/AttendanceCheckOut`,
+      `${baseURL}/api/HrAttendance/AttendanceCheckOut`,
       { ...data },
       requestOptions
     )
@@ -87,9 +83,7 @@ export function checkOut(data) {
 
 export function getDepartments() {
   return axios
-    .get(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/Departments`
-    )
+    .get(`${baseURL}/api/HrAttendance/Departments`)
     .then((response) => {
       return response.data;
     })
@@ -102,7 +96,7 @@ export function getInEmployees(data) {
   console.log("from the in api", data);
   return axios
     .get(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/EmployeeIn?DepId=${data.departmentId}&DateChick=${data.date}`
+      `${baseURL}/api/HrAttendance/EmployeeIn?DepId=${data.departmentId}&DateChick=${data.date}`
     )
     .then((response) => {
       return response.data;
@@ -116,7 +110,7 @@ export function getOutEmployees(data) {
   console.log(data);
   return axios
     .get(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/EmployeeOut?DepId=${data.departmentId}&DateChick=${data.date}`
+      `${baseURL}/api/HrAttendance/EmployeeOut?DepId=${data.departmentId}&DateChick=${data.date}`
     )
     .then((response) => {
       console.log(response.data);
@@ -129,9 +123,7 @@ export function getOutEmployees(data) {
 
 export function getEmployeesInList(data) {
   return axios
-    .get(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/InList?DateChick=${data.date}`
-    )
+    .get(`${baseURL}/api/HrAttendance/InList?DateChick=${data.date}`)
     .then((response) => {
       return response.data;
     })
@@ -141,9 +133,7 @@ export function getEmployeesInList(data) {
 }
 export function getEmployeesOutList(data) {
   return axios
-    .get(
-      `https://apiskyculinaire.zarkani-group.com/api/HrAttendance/OutList?DateChick=${data.date}`
-    )
+    .get(`${baseURL}/api/HrAttendance/OutList?DateChick=${data.date}`)
     .then((response) => {
       return response.data;
     })
@@ -153,7 +143,7 @@ export function getEmployeesOutList(data) {
 }
 export function getJobsList() {
   return axios
-    .get(`https://apiskyculinaire.zarkani-group.com/api/HR/Coding/HrLkpJops`)
+    .get(`${baseURL}/api/HR/Coding/HrLkpJops`)
     .then((response) => {
       return response.data;
     })
