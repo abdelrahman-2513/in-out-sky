@@ -110,12 +110,12 @@ function EmployeeData({
   const handleCheckIn = () => {
     console.log("from check in data", {
       vCardNumber: nfc,
-      attDateTime: dayjs(new Date()).format("HH:mm"),
+      attDateTime: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
       attExpectedID: selectedShift?.attExpectedID,
     });
     checkIn({
       vCardNumber: nfc,
-      attDateTime: dayjs(new Date()).format("HH:mm"),
+      attDateTime: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
       attExpectedID: selectedShift?.attExpectedID,
     })
       .then((res) => {
@@ -150,7 +150,7 @@ function EmployeeData({
     checkOut({
       vCardNumber: nfc,
       //date: dayjs(new Date()).format("YYYY-MM-DD"),
-      attDateTime: dayjs(new Date()).format("HH:mm"),
+      attDateTime: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
       attExpectedID: Employee?.openShifID,
       //attDate: dayjs(new Date()).format("YYYY-MM-DD"),
     })

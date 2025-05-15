@@ -2,13 +2,11 @@ import React, { useRef, useState } from "react";
 import NumPad from "../NumPad/NumPad";
 import { TbGridDots } from "react-icons/tb";
 import { addingOverTimeShift, checkManager } from "../../assets/API";
+import dayjs from "dayjs";
+import "dayjs/locale/ar"; // Arabic locale
+import "dayjs/locale/en"; // English locale (default)
 
-const now = new Date();
-const time = now.toLocaleTimeString([], {
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-});
+const now = dayjs().format("YYYY-MM-DDTHH:mm:ss");
 
 function AddOverTime({
   onClose,
@@ -36,7 +34,7 @@ function AddOverTime({
 
   function authorizeManager() {
     if (!nfc) return;
-    addingOverTimeShift(nfc, authorizedCode, time)
+    addingOverTimeShift(nfc, authorizedCode, now)
       .then((res) => {
         if (res.status === 200) {
           onSuccess();

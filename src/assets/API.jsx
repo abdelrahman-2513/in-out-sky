@@ -166,7 +166,7 @@ export function checkManager(nfc) {
 export function addingOverTimeShift(empNFC, managerNFC, time) {
   return axios
     .post(
-      `${baseURL}/api/HrAttendance/AttendanceOverTimeShift?PersAttCode=${empNFC}&MangerAttCode=${managerNFC}&CurTime=${time}`
+      `${baseURL}/api/HrAttendance/AttendanceOverTimeShift?PersAttCode=${empNFC}&MangerAttCode=${managerNFC}&CurDateTime=${time}`
     )
     .then((response) => {
       return response;
