@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getDepartments } from "../../assets/API";
 
-function DepartmentComponent({ language, setDeratment, reset, depsTrns }) {
+function DepartmentComponent({
+  language,
+  setDeratment,
+  reset,
+  depsTrns,
+  onBack,
+}) {
   const [depatrments, setDepatrments] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const depatrmentsTrans = {
@@ -50,12 +56,6 @@ function DepartmentComponent({ language, setDeratment, reset, depsTrns }) {
           <p style={{ textAlign: "center" }}>
             {depatrmentsTrans[language][""]}
           </p>
-          {/* <img
-          className="gif"
-          src="/images/NFC.gif"
-          alt={language === "en" ? "Move NFC Card" : "حرك بطاقة NFC"}
-          srcSet=""
-        /> */}
         </div>
       </div>
 
@@ -66,23 +66,6 @@ function DepartmentComponent({ language, setDeratment, reset, depsTrns }) {
           className="content-btns-container"
           style={{ direction: language === "ar" ? "rtl" : "ltr" }}
         >
-          {/* <select onChange={handleDepSelection}>
-            <option id="language-select">
-              {language === "en"
-                ? "Please select a department"
-                : "يرجى أختيار القسم"}
-            </option>
-            {depatrments?.map((department) => (
-              <option
-                id="language-select"
-                key={department.departmentId}
-                // onClick={() => setDeratment(option)}
-                value={[department.departmentId, department.departmentName]}
-              >
-                {department.departmentName}
-              </option>
-            ))}
-          </select> */}
           {depatrments?.map((department) => (
             <button
               className="list-btn"
@@ -101,15 +84,11 @@ function DepartmentComponent({ language, setDeratment, reset, depsTrns }) {
         ""
       )}
       <div className="btns login-btn-container">
-        {/* <button className="btn" onClick={handleCheckOut}>
-          {language === "en" ? "Check Out" : "تسجيل الخروج"}
-        </button>
-        <button className="btn btn-primary" onClick={handleCheckIn}>
-          {language === "en" ? "Check In" : "تسجيل الدخول"}
-        </button> */}
-
         <button className="btn btn-primary back-btn" onClick={reset}>
           {language === "en" ? "Go Back Home" : "العودة للصفحة الرئيسية"}
+        </button>
+        <button className="btn btn-primary back-btn" onClick={onBack}>
+          {language === "en" ? "Back" : "رجوع"}
         </button>
       </div>
     </div>

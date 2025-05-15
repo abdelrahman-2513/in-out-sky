@@ -82,8 +82,9 @@ export function checkOut(data) {
 }
 
 export function getDepartments() {
+  const today = new Date().toISOString().split("T")[0];
   return axios
-    .get(`${baseURL}/api/HrAttendance/Departments`)
+    .get(`${baseURL}/api/HrAttendance/Departments?Dateselect=${today}`)
     .then((response) => {
       return response.data;
     })
@@ -146,6 +147,29 @@ export function getJobsList() {
     .get(`${baseURL}/api/HR/Coding/HrLkpJops`)
     .then((response) => {
       return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+
+export function checkManager(nfc) {
+  return axios
+    .get(`${baseURL}/api/HrAttendance/CheckAttManager?AttCode=${nfc}`)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+export function addingOverTimeShift(empNFC, managerNFC, time) {
+  return axios
+    .post(
+      `${baseURL}/api/HrAttendance/AttendanceOverTimeShift?PersAttCode=${empNFC}&MangerAttCode=${managerNFC}&CurTime=${time}`
+    )
+    .then((response) => {
+      return response;
     })
     .catch((error) => {
       throw error;

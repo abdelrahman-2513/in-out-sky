@@ -8,6 +8,7 @@ function EmployeeList({
   language,
   reset,
   transaction,
+  onBack,
 }) {
   const [employees, setEmployees] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -113,15 +114,11 @@ function EmployeeList({
         <p style={{ marginTop: "20px" }}>{employeesTrans[language]["empty"]}</p>
       )}
       <div className="btns login-btn-container">
-        {/* <button className="btn" onClick={handleCheckOut}>
-          {language === "en" ? "Check Out" : "تسجيل الخروج"}
-        </button>
-        <button className="btn btn-primary" onClick={handleCheckIn}>
-          {language === "en" ? "Check In" : "تسجيل الدخول"}
-        </button> */}
-
         <button className="btn btn-primary back-btn" onClick={reset}>
           {language === "en" ? "Home Page" : "الصفحة الرئيسية"}
+        </button>
+        <button className="btn btn-primary back-btn" onClick={onBack}>
+          {language === "en" ? "Back" : "رجوع"}
         </button>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import "dayjs/locale/ar"; // Arabic locale
 import "dayjs/locale/en"; // English locale (default)
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import { checkIn, checkOut } from "../../assets/API";
 import Confirmation from "../Confirmation/Confirmation";
@@ -50,7 +50,7 @@ function EmployeeData({
   const [msg, setMsg] = useState("");
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [actionClicked, setActionClicked] = useState(false);
-  const [timeRemains, setTimeRemains] = useState(30000);
+  const [timeRemains, setTimeRemains] = useState(30000000);
   const [selectedShift, setSelectedShift] = useState(null);
   useEffect(() => {
     const { arabicDate, arabicTime, englishDate, englishTime } = getDateTime();
@@ -110,16 +110,12 @@ function EmployeeData({
   const handleCheckIn = () => {
     console.log("from check in data", {
       vCardNumber: nfc,
-      //date: dayjs(new Date()).format("YYYY-MM-DD"),
       attDateTime: dayjs(new Date()).format("HH:mm"),
-      //attDate: dayjs(new Date()).format("YYYY-MM-DD"),
       attExpectedID: selectedShift?.attExpectedID,
     });
     checkIn({
       vCardNumber: nfc,
-      //date: dayjs(new Date()).format("YYYY-MM-DD"),
       attDateTime: dayjs(new Date()).format("HH:mm"),
-      //attDate: dayjs(new Date()).format("YYYY-MM-DD"),
       attExpectedID: selectedShift?.attExpectedID,
     })
       .then((res) => {
@@ -184,24 +180,6 @@ function EmployeeData({
       });
   };
 
-  // function handleCheckIn() {
-  //   setState(200);
-  //   setMsg(trns[language][`in-200`]);
-  //   setTimeout(() => {
-  //     onClose();
-  //   }, 2000);
-  //   reset();
-  // }
-
-  // function handleCheckOut() {
-  //   setState(200);
-  //   setMsg(trns[language]["out-200"]);
-  //   setTimeout(() => {
-  //     onClose();
-  //   }, 2000);
-  //   reset();
-  // }
-
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
@@ -217,6 +195,41 @@ function EmployeeData({
     } else {
       handleCheckOut();
     }
+  }
+
+  function delayMessage() {
+    if (
+      !selectedShift ||
+      !selectedShift?.shiftTime ||
+      selectedTransaction !== "clockIn"
+    )
+      return;
+
+    const targetTimeStr = selectedShift?.shiftTime;
+    const [h, m, s] = targetTimeStr.split(":").map(Number);
+    const now = new Date();
+    const target = new Date();
+    target.setHours(h, m, s || 0, 0);
+
+    if (now <= target) return ""; // No delay
+
+    const diffMs = now - target;
+    const totalSeconds = Math.floor(diffMs / 1000);
+
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
+      2,
+      "0"
+    );
+    const seconds = String(totalSeconds % 60).padStart(2, "0");
+
+    const delayTime = `${hours}H:${minutes}M`;
+    const message =
+      language === "en"
+        ? ` You are late by ${delayTime}.`
+        : ` لقد تأخرت لمدة ${delayTime}`;
+
+    return message;
   }
 
   return (
@@ -288,18 +301,27 @@ function EmployeeData({
                       style={{ width: "15px", height: "15px" }}
                       readOnly // Prevents React warnings about uncontrolled inputs
                     />
-                    <p>{shift?.shiftName}</p>
+                    <p style={{ width: "fit-content" }}>
+                      {shift?.shiftName} ({shift?.shiftLable})
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           )}
         </div>
-        {/* <div className="dialog-actions">
-          <button className="btn " onClick={onClose}>
-            Close
-          </button>
-        </div> */}
+
+        <div className="feedback">
+          {selectedShift && (
+            <p
+              style={{
+                color: "red",
+              }}
+            >
+              {delayMessage()}
+            </p>
+          )}
+        </div>
 
         <div className="feedback">
           {msg && (
@@ -327,12 +349,6 @@ function EmployeeData({
                 ? "disabled-btn"
                 : ""
             }`}
-            // id={
-            //   actionClicked ||
-            //   (selectedTransaction === "clockIn" && !selectedShift)
-            //     ? "disabled"
-            //     : ""
-            // }
             onClick={() => {
               if (actionClicked) return;
               setActionClicked(true);

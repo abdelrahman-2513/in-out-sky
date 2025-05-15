@@ -3,17 +3,24 @@ import LogGrid from "../LogGrid/LogGrid";
 import { getEmployeesInList, getEmployeesOutList } from "../../assets/API";
 import "../Header/Header.css";
 import dayjs from "dayjs";
+import ManagerAuth from "../Manager/ManagerAuth";
+import AddOverTime from "../Manager/AddOverTime";
 
 function TransactionsComponent({
   language,
   message = "",
   setSelectedTransaction,
   depsTrns,
+  direction,
 }) {
   const [employeesInList, setEmployeesInList] = useState([]);
   const [employeesOutList, setEmployeesOutList] = useState([]);
   const [selectedLogTable, setSelectedLogTable] = useState("clockIn");
   const [openLogTable, setOpenLogTable] = useState(false);
+  const [managerView, setManagerView] = useState(false);
+  const [openManagerAuth, setOpenManagerAuth] = useState(false);
+  const [authorizedCode, setAuthorizedCode] = useState(null);
+  const [openAddOverTime, setOpenAddOverTime] = useState(false);
 
   const transactions = {
     en: {
@@ -84,99 +91,126 @@ function TransactionsComponent({
           <p style={{ textAlign: "center" }}>
             {transactions[language][message]}
           </p>
-          {/* <img
-              className="gif"
-              src="/images/NFC.gif"
-              alt={language === "en" ? "Move NFC Card" : "حرك بطاقة NFC"}
-              srcSet=""
-            /> */}
         </div>
       </div>
       <div className="main-grid">
-        <div className="logs-side" style={{ height: "100%" }}>
-          {/* <p className="status-title">{transactions[language].logsTitle}</p> */}
-          <div className="status-btns language-tabs " id="table-btns">
+        {managerView && (
+          <div style={{ display: "flex", gap: "10px", width: "100%" }}>
             <div
-              // onClick={() => handleTableSelection("clockIn")}
-              onClick={() => handleTableSelection("clockIn")}
-              className={` ${selectedLogTable === "clockIn" ? "active" : ""}`}
-              style={{
-                direction: language === "en" ? "ltr" : "rtl",
-                padding: "5px 10px",
-              }}
+              className="logs-side"
+              style={{ height: "100%", width: "100%" }}
             >
-              {transactions[language].checkedIn}
+              <div className="status-btns language-tabs " id="table-btns">
+                <div
+                  onClick={() => handleTableSelection("clockIn")}
+                  className={` ${
+                    selectedLogTable === "clockIn" ? "active" : ""
+                  }`}
+                  style={{
+                    direction: language === "en" ? "ltr" : "rtl",
+                    padding: "5px 10px",
+                  }}
+                >
+                  {transactions[language].checkedIn}
+                </div>
+                <div
+                  onClick={() => handleTableSelection("clockOut")}
+                  className={` ${
+                    selectedLogTable === "clockOut" ? "active" : ""
+                  }`}
+                  style={{
+                    direction: language === "en" ? "ltr" : "rtl",
+                    padding: "5px 10px",
+                  }}
+                >
+                  {transactions[language].checkedOut}
+                </div>
+              </div>
+              <LogGrid
+                depsTrns={depsTrns}
+                data={
+                  selectedLogTable === "clockIn"
+                    ? employeesInList
+                    : employeesOutList
+                }
+                title={
+                  selectedLogTable === "clockIn"
+                    ? transactions[language].logTableTitleIn
+                    : transactions[language].logTableTitleOut
+                }
+                language={language}
+                onClose={() => setOpenLogTable(false)}
+              />
             </div>
-            <div
-              // onClick={() => handleTableSelection("clockOut")}
-              onClick={() => handleTableSelection("clockOut")}
-              className={` ${selectedLogTable === "clockOut" ? "active" : ""}`}
-              style={{
-                direction: language === "en" ? "ltr" : "rtl",
-                padding: "5px 10px",
-
-                //width: "100px",
-              }}
+            <button
+              className="btn btn-primary trns-btn"
+              onClick={() => setOpenAddOverTime(true)}
             >
-              {transactions[language].checkedOut}
-            </div>
+              {language === "en" ? "Add Over Time" : "اضافة وقت اضافي"}
+            </button>
           </div>
-          <LogGrid
-            depsTrns={depsTrns}
-            data={
-              selectedLogTable === "clockIn"
-                ? employeesInList
-                : employeesOutList
-            }
-            title={
-              selectedLogTable === "clockIn"
-                ? transactions[language].logTableTitleIn
-                : transactions[language].logTableTitleOut
-            }
-            language={language}
-            onClose={() => setOpenLogTable(false)}
-          />
-        </div>
-        <div className="divider"></div>
+        )}
+        {/* <div className="divider"></div> */}
 
-        <div
-          className="btns login-btn-container half-screen"
-          style={{ gap: "10px" }}
-        >
-          {/* <button className="btn" onClick={handleCheckOut}>
-          {language === "en" ? "Check Out" : "تسجيل الخروج"}
-        </button>
-        <button className="btn btn-primary" onClick={handleCheckIn}>
-          {language === "en" ? "Check In" : "تسجيل الدخول"}
-        </button> */}
+        {!managerView && (
+          <div className="btns login-btn-container " style={{ gap: "10px" }}>
+            <button
+              className="btn btn-primary trns-btn"
+              onClick={() => setSelectedTransaction("clockIn")}
+              style={{ backgroundColor: "#7CB342" }}
+            >
+              {language === "en" ? "Clock In" : "تسجيل حضور"}
+            </button>
+            <button
+              className="btn btn-primary trns-btn"
+              onClick={() => setSelectedTransaction("clockOut")}
+              style={{ backgroundColor: "#D84315" }}
+            >
+              {language === "en" ? "Clock Out" : "تسجيل انصراف"}
+            </button>
+          </div>
+        )}
+        <div>
           <button
-            className="btn btn-primary trns-btn"
-            onClick={() => setSelectedTransaction("clockIn")}
+            className="btn btn-primary trns-btn manager-view-btn"
+            onClick={() => {
+              managerView ? setManagerView(false) : setOpenManagerAuth(true);
+            }}
+            style={{
+              backgroundColor: "#546E7A",
+            }}
           >
-            {language === "en" ? "Clock In" : "تسجيل حضور"}
-          </button>
-          <button
-            className="btn btn-primary trns-btn"
-            onClick={() => setSelectedTransaction("clockOut")}
-          >
-            {language === "en" ? "Clock Out" : "تسجيل انصراف"}
+            {language === "en"
+              ? managerView
+                ? "Employee View"
+                : "Manager View"
+              : managerView
+              ? "عرض الموظف"
+              : "عرض المدير"}{" "}
           </button>
         </div>
       </div>
-      {/* {openLogTable && (
-        <LogGrid
-          data={
-            selectedLogTable === "clockIn" ? employeesInList : employeesOutList
-          }
-          title={
-            selectedLogTable === "clockIn"
-              ? transactions[language].logTableTitleIn
-              : transactions[language].logTableTitleOut
-          }
+      {openManagerAuth && (
+        <ManagerAuth
+          onClose={() => setOpenManagerAuth(false)}
           language={language}
-          onClose={() => setOpenLogTable(false)}
+          onSuccess={() => {
+            setManagerView(true);
+            setOpenManagerAuth(false);
+          }}
+          setAuthorizedCode={setAuthorizedCode}
+          direction
         />
-      )} */}
+      )}
+      {openAddOverTime && (
+        <AddOverTime
+          onClose={() => setOpenAddOverTime(false)}
+          onSuccess={() => setOpenAddOverTime(false)}
+          language={language}
+          direction
+          authorizedCode={authorizedCode}
+        />
+      )}
     </div>
   );
 }

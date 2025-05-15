@@ -52,65 +52,65 @@ function ButtonsComponent({
       nfcRef.current.focus();
     }
   }, [language, employee]);
-  const handleCheckIn = () => {
-    takeAction({
-      cardId: nfc,
-      date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      kind: "I",
-    })
-      .then((res) => {
-        setMessage("200");
+  // const handleCheckIn = () => {
+  //   takeAction({
+  //     cardId: nfc,
+  //     date: dayjs(new Date()).format("YYYY-MM-DD"),
+  //     dateTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+  //     kind: "I",
+  //   })
+  //     .then((res) => {
+  //       setMessage("200");
 
-        setNfc("");
-        setTimeout(() => {
-          setCheckIn(false);
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      })
-      .catch((err) => {
-        setMessage("400");
-        setNfc("");
-        setTimeout(() => {
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      });
-  };
+  //       setNfc("");
+  //       setTimeout(() => {
+  //         setCheckIn(false);
+  //         setMessage("");
+  //         nfcRef.current.focus();
+  //         setCheckOut(false);
+  //       }, 2000);
+  //     })
+  //     .catch((err) => {
+  //       setMessage("400");
+  //       setNfc("");
+  //       setTimeout(() => {
+  //         setMessage("");
+  //         nfcRef.current.focus();
+  //         setCheckOut(false);
+  //       }, 2000);
+  //     });
+  // };
 
-  const handleCheckOut = () => {
-    takeAction({
-      cardId: nfc,
-      date: dayjs(new Date()).format("YYYY-MM-DD"),
-      dataTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
-      kind: "I",
-    })
-      .then((res) => {
-        console.log(res);
-        setMessage("200-out");
+  // const handleCheckOut = () => {
+  //   takeAction({
+  //     cardId: nfc,
+  //     date: dayjs(new Date()).format("YYYY-MM-DD"),
+  //     dataTime: dayjs(new Date()).format("YYYY-MM-DD HH:mm:ss"),
+  //     kind: "I",
+  //   })
+  //     .then((res) => {
+  //       console.log(res);
+  //       setMessage("200-out");
 
-        setNfc("");
-        setTimeout(() => {
-          setCheckIn(false);
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      })
-      .catch((err) => {
-        console.log(err);
-        setMessage("400-out");
-        setNfc("");
-        setTimeout(() => {
-          setMessage("");
-          nfcRef.current.focus();
-          setCheckOut(false);
-        }, 2000);
-      });
-  };
+  //       setNfc("");
+  //       setTimeout(() => {
+  //         setCheckIn(false);
+  //         setMessage("");
+  //         nfcRef.current.focus();
+  //         setCheckOut(false);
+  //       }, 2000);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       setMessage("400-out");
+  //       setNfc("");
+  //       setTimeout(() => {
+  //         setMessage("");
+  //         nfcRef.current.focus();
+  //         setCheckOut(false);
+  //       }, 2000);
+  //     });
+  // };
   function handleLogin() {
     if (nfc === employee?.cardNumber) {
       login({ id: nfc }).then((res) => {

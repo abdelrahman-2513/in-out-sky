@@ -212,12 +212,14 @@ function FullComponent({
           department={deparment}
           reset={reset}
           transaction={selectedTransaction}
+          onBack={() => setDepartment(null)}
         />
       ) : !selectedTransaction ? (
         <TransactionsComponent
           setSelectedTransaction={setSelectedTransaction}
           language={language}
           depsTrns={depsTrns}
+          direction={direction}
         />
       ) : (
         <DepartmentComponent
@@ -225,6 +227,7 @@ function FullComponent({
           setDeratment={setDepartment}
           reset={reset}
           depsTrns={depsTrns}
+          onBack={() => setSelectedTransaction(null)}
         />
       )}
     </div>
