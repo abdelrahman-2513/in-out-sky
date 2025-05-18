@@ -3,6 +3,38 @@ import NumPad from "../NumPad/NumPad";
 import { TbGridDots } from "react-icons/tb";
 import { checkManager } from "../../assets/API";
 
+function parseHashedAttendance(input) {
+  const today = new Date();
+
+  // Extract the code length by comparing repeated segments
+  const totalLength = input.length;
+
+  // Try all possible code lengths (1 to 5 is safe assumption)
+  for (let len = 1; len <= 5; len++) {
+    if (totalLength !== len * 3 + 6) continue;
+
+    const code1 = input.slice(0, len);
+    const day = parseInt(input.slice(len, len + 2), 10);
+
+    const code2 = input.slice(len + 2, len * 2 + 2);
+    const month = parseInt(input.slice(len * 2 + 2, len * 2 + 4), 10);
+
+    const code3 = input.slice(len * 2 + 4, len * 3 + 4);
+    const year = 2000 + parseInt(input.slice(len * 3 + 4), 10);
+
+    if (code1 === code2 && code2 === code3) {
+      const isToday =
+        today.getDate() === day &&
+        today.getMonth() + 1 === month &&
+        today.getFullYear() === year;
+
+      if (isToday) return code1;
+    }
+  }
+
+  return null;
+}
+
 function ManagerAuth({
   onClose,
   onSuccess,
@@ -29,10 +61,11 @@ function ManagerAuth({
 
   function authorizeManager() {
     if (!nfc) return;
-    checkManager(nfc)
+    const decodedNfc = parseHashedAttendance(String(nfc));
+    checkManager(decodedNfc)
       .then((res) => {
         if (res.status === 200) {
-          setAuthorizedCode(nfc);
+          setAuthorizedCode(decodedNfc);
           onSuccess();
         } else {
           setShowError(true);

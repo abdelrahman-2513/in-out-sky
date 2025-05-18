@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseURL = import.meta.env.VITE_API_BASE_URL;
-
+console.log("base url", baseURL);
 export function takeAction(data) {
   const requestOptions = {
     method: "POST",
