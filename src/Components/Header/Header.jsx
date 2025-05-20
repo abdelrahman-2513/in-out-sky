@@ -63,7 +63,7 @@ function Header({ language, setLanguage, reset }) {
         </select>
       </div> */}
 
-      <div className="language-tabs">
+      <div className="language-tabs header-img">
         <div
           className={`language-tab ${language === "en" ? "active" : ""}`}
           onClick={() => setLanguage("en")}
