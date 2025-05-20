@@ -65,7 +65,7 @@ function ManagerAuth({
     checkManager(decodedNfc)
       .then((res) => {
         if (res.status === 200) {
-          setAuthorizedCode(decodedNfc);
+          setAuthorizedCode && setAuthorizedCode(decodedNfc);
           onSuccess();
         } else {
           setShowError(true);

@@ -40,7 +40,7 @@ function ButtonsComponent({
   const [checkIn, setCheckIn] = useState(false);
   const [checkOut, setCheckOut] = useState(false);
   const [message, setMessage] = useState("");
-  const [showNumPad, setShowNumPad] = useState(false);
+  const [showNumPad, setShowNumPad] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [employeeData, setEmployeeData] = useState(null); // State to control the dialog visibility
   const nfcRef = useRef(null);

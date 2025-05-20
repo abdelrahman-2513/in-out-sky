@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import LogGrid from "../LogGrid/LogGrid";
 import { getEmployeesInList, getEmployeesOutList } from "../../assets/API";
 import "../Header/Header.css";
@@ -12,6 +12,7 @@ function TransactionsComponent({
   setSelectedTransaction,
   depsTrns,
   direction,
+  setLanguage,
 }) {
   const [employeesInList, setEmployeesInList] = useState([]);
   const [employeesOutList, setEmployeesOutList] = useState([]);
@@ -75,6 +76,42 @@ function TransactionsComponent({
     setSelectedLogTable(status);
     setOpenLogTable(true);
   }
+
+  //Idle manager view
+
+  const timeoutRef = useRef(null);
+
+  const handleInactivity = () => {
+    console.log("User has been inactive for 3 seconds");
+    // 🔥 Your action here (e.g., logout, warning modal, etc.)
+    setLanguage("en");
+    setManagerView(false);
+  };
+
+  const resetTimer = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(handleInactivity, 3000); // 30,000 sec
+  };
+
+  useEffect(() => {
+    const events = ["mousemove", "keydown", "mousedown", "touchstart"];
+
+    events.forEach((event) => {
+      window.addEventListener(event, resetTimer);
+    });
+
+    // Initialize timer on mount
+    resetTimer();
+
+    return () => {
+      // Clean up
+      events.forEach((event) => {
+        window.removeEventListener(event, resetTimer);
+      });
+      clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
   return (
     <div
       className="secondary-container"
@@ -143,7 +180,7 @@ function TransactionsComponent({
               />
             </div>
             <button
-              className="btn btn-primary trns-btn"
+              className="btn btn-primary trns-btn overtime-btn"
               onClick={() => setOpenAddOverTime(true)}
             >
               {language === "en" ? "Add Over Time" : "اضافة وقت اضافي"}
@@ -182,10 +219,10 @@ function TransactionsComponent({
           >
             {language === "en"
               ? managerView
-                ? "Employee View"
+                ? "Main Screen"
                 : "Manager View"
               : managerView
-              ? "عرض الموظف"
+              ? "الشاشة الرئيسية"
               : "عرض المدير"}{" "}
           </button>
         </div>

@@ -49,20 +49,6 @@ function Header({ language, setLanguage, reset }) {
         {formattedDateTime}
       </div>
 
-      {/* <div className="language-selector">
-        <label htmlFor="language-select">
-          {language === "en" ? "Language:" : "اللغة:"}
-        </label>
-        <select
-          id="language-select"
-          value={language}
-          onChange={handleLanguageChange}
-        >
-          <option value="en">English</option>
-          <option value="ar">العربية</option>
-        </select>
-      </div> */}
-
       <div className="language-tabs header-img">
         <div
           className={`language-tab ${language === "en" ? "active" : ""}`}

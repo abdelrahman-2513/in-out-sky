@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import { checkIn, checkOut } from "../../assets/API";
 import Confirmation from "../Confirmation/Confirmation";
 import "./EmployeeData.css";
+import ManagerAuth from "../Manager/ManagerAuth";
 
 function formatDate(date, language) {
   // Set the locale based on the provided language
@@ -50,8 +51,9 @@ function EmployeeData({
   const [msg, setMsg] = useState("");
   const [openConfirmation, setOpenConfirmation] = useState(false);
   const [actionClicked, setActionClicked] = useState(false);
-  const [timeRemains, setTimeRemains] = useState(30000000);
+  const [timeRemains, setTimeRemains] = useState(30000);
   const [selectedShift, setSelectedShift] = useState(null);
+  const [openManagerPerm, setOpenManagerPerm] = useState(false);
   useEffect(() => {
     const { arabicDate, arabicTime, englishDate, englishTime } = getDateTime();
     setDateTime({ arabicDate, arabicTime, englishDate, englishTime });
@@ -232,6 +234,22 @@ function EmployeeData({
     return message;
   }
 
+  function handleCloseManagerAuth() {
+    setOpenManagerPerm(false);
+    onClose();
+  }
+
+  function handleManagerAuthOpen() {
+    setOpenManagerPerm(true);
+    setTimeRemains(30000);
+  }
+
+  function handleSuccessManagerAuth() {
+    setOpenManagerPerm(false);
+    setActionClicked(true);
+    setTimeRemains(5000);
+    onConfirm();
+  }
   return (
     <div className="dialog-overlay" style={{ direction: direction }}>
       <div className="dialog">
@@ -350,6 +368,7 @@ function EmployeeData({
                 : ""
             }`}
             onClick={() => {
+              if (delayMessage()) return handleManagerAuthOpen();
               if (actionClicked) return;
               setActionClicked(true);
               setTimeRemains(5000);
@@ -374,6 +393,14 @@ function EmployeeData({
           msg={msg}
           state={state}
           reset={reset}
+        />
+      )}
+      {openManagerPerm && (
+        <ManagerAuth
+          onClose={handleCloseManagerAuth}
+          onSuccess={handleSuccessManagerAuth}
+          language={language}
+          direction={direction}
         />
       )}
     </div>

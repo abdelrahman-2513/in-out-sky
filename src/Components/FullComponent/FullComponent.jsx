@@ -189,6 +189,7 @@ function FullComponent({
     setEmployee(null);
     setDepartment(null);
     setSelectedTransaction(null);
+    setLanguage("en");
   }
   const direction = language === "ar" ? "rtl" : "ltr";
   return (
@@ -220,6 +221,7 @@ function FullComponent({
           language={language}
           depsTrns={depsTrns}
           direction={direction}
+          setLanguage={setLanguage}
         />
       ) : (
         <DepartmentComponent

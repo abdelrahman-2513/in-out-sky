@@ -194,6 +194,10 @@
   font-size: 23px !important;
 }
 
+.overtime-btn {
+  margin-top: auto;
+  height: calc(100% - 59px);
+}
 .list-item {
   height: 40px;
 }
