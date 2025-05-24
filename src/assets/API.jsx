@@ -106,6 +106,28 @@ export function getInEmployees(data) {
       throw error;
     });
 }
+export function getEmployeesOverTime(depId) {
+  return axios
+    .get(
+      `${baseURL}/api/HrAttendance/OverTimeEmployeeList?DepartmentID=${depId}`
+    )
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+export function getLogOutData(attCode) {
+  return axios
+    .get(`${baseURL}/api/HrAttendance/LogOut?vCardNumber=${attCode}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
 
 export function getOutEmployees(data) {
   console.log(data);
@@ -163,11 +185,21 @@ export function checkManager(nfc) {
       throw error;
     });
 }
-export function addingOverTimeShift(empNFC, managerNFC, time) {
+export function addingOverTimeShift(empId, managerNFC, time, untillTime) {
   return axios
     .post(
-      `${baseURL}/api/HrAttendance/AttendanceOverTimeShift?PersAttCode=${empNFC}&MangerAttCode=${managerNFC}&CurDateTime=${time}`
+      `${baseURL}/api/HrAttendance/AttendanceOverTimeShift?PersId=${empId}&MangerAttCode=${managerNFC}&CurDateTime=${time}&ToDateTime=${untillTime}`
     )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
+}
+export function overTimeDepartments() {
+  return axios
+    .get(`${baseURL}/api/HrAttendance/DepartmentsOverTime`)
     .then((response) => {
       return response;
     })

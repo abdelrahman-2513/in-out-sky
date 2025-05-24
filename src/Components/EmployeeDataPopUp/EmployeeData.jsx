@@ -3,7 +3,7 @@ import "dayjs/locale/ar"; // Arabic locale
 import "dayjs/locale/en"; // English locale (default)
 import { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { checkIn, checkOut } from "../../assets/API";
+import { checkIn, checkOut, getLogOutData } from "../../assets/API";
 import Confirmation from "../Confirmation/Confirmation";
 import "./EmployeeData.css";
 import ManagerAuth from "../Manager/ManagerAuth";
@@ -31,6 +31,34 @@ function getDateTime() {
   return { arabicDate, arabicTime, englishDate, englishTime };
 }
 
+function getTimeUntil(targetTimeStr) {
+  if (!targetTimeStr) return;
+  const now = new Date();
+
+  // Extract hours, minutes, seconds from the input
+  const [hours, minutes, seconds] = targetTimeStr.split(":");
+
+  // Create a Date object for today with the target time
+  const target = new Date();
+  target.setHours(parseInt(hours), parseInt(minutes), parseInt(seconds), 0);
+
+  // If current time is after or equal to the target time
+  if (now >= target) {
+    return null; // or return "Time has passed"
+  }
+
+  const diffMs = target - now;
+  const diffMins = Math.floor(diffMs / 60000);
+  const h = Math.floor(diffMins / 60);
+  const m = diffMins % 60;
+  console.log(
+    "from early func",
+    `${h.toString().padStart(2, "0")}H${m.toString().padStart(2, "0")}M`
+  );
+
+  return `${h.toString().padStart(2, "0")}H${m.toString().padStart(2, "0")}M`;
+}
+
 function EmployeeData({
   title,
   Employee,
@@ -54,6 +82,7 @@ function EmployeeData({
   const [timeRemains, setTimeRemains] = useState(30000);
   const [selectedShift, setSelectedShift] = useState(null);
   const [openManagerPerm, setOpenManagerPerm] = useState(false);
+  const [earlyLeavingWarning, setEarlyLeavingWarning] = useState(null);
   useEffect(() => {
     const { arabicDate, arabicTime, englishDate, englishTime } = getDateTime();
     setDateTime({ arabicDate, arabicTime, englishDate, englishTime });
@@ -250,6 +279,20 @@ function EmployeeData({
     setTimeRemains(5000);
     onConfirm();
   }
+
+  async function getLogOut() {
+    // if (selectedTransaction !== "clockOut") return;
+    const message = await getLogOutData(nfc);
+    const outTime = message?._shiftarray?.shiftOUtTime;
+    console.log("outTime", message);
+    setEarlyLeavingWarning(getTimeUntil(outTime));
+  }
+
+  useEffect(() => {
+    console.log("Employee", Employee);
+    getLogOut();
+  }, [selectedTransaction, Employee]);
+
   return (
     <div className="dialog-overlay" style={{ direction: direction }}>
       <div className="dialog">
@@ -340,6 +383,17 @@ function EmployeeData({
             </p>
           )}
         </div>
+        <div className="feedback">
+          {earlyLeavingWarning && (
+            <p
+              style={{
+                color: "red",
+              }}
+            >
+              You can log out after {earlyLeavingWarning}
+            </p>
+          )}
+        </div>
 
         <div className="feedback">
           {msg && (
@@ -361,9 +415,14 @@ function EmployeeData({
             {language === "en" ? "No" : "لا"}
           </button>
           <button
+            disabled={selectedTransaction === "clockOut" && earlyLeavingWarning}
             className={`dialog-btn confirm-btn ${
               actionClicked ||
               (selectedTransaction === "clockIn" && !selectedShift)
+                ? "disabled-btn"
+                : ""
+            } ${
+              selectedTransaction === "clockOut" && earlyLeavingWarning
                 ? "disabled-btn"
                 : ""
             }`}

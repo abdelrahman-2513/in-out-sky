@@ -82,15 +82,16 @@ function TransactionsComponent({
   const timeoutRef = useRef(null);
 
   const handleInactivity = () => {
-    console.log("User has been inactive for 3 seconds");
+    console.log("User has been inactive for 30 seconds");
     // 🔥 Your action here (e.g., logout, warning modal, etc.)
     setLanguage("en");
     setManagerView(false);
+    setOpenAddOverTime(false);
   };
 
   const resetTimer = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(handleInactivity, 3000); // 30,000 sec
+    timeoutRef.current = setTimeout(handleInactivity, 30000); // 30,000 sec
   };
 
   useEffect(() => {

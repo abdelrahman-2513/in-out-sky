@@ -26,7 +26,7 @@ function createData(name, department, transaction, date, time) {
 // ];
 
 const groupByDepartment = (data) => {
-  return data.reduce((groups, row) => {
+  return data?.reduce((groups, row) => {
     const department = row.deparmentName;
     if (!groups[department]) {
       groups[department] = [];
