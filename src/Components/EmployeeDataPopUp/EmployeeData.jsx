@@ -289,7 +289,7 @@ function EmployeeData({
   }
 
   useEffect(() => {
-    console.log("Employee", Employee);
+    console.log("Employee from popup", Employee);
     getLogOut();
   }, [selectedTransaction, Employee]);
 

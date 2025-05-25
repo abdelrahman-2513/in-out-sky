@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import "dayjs/locale/ar"; // Arabic locale
 import "dayjs/locale/en"; // English locale (default)
-import { DatePicker } from "antd";
+import { DatePicker, TimePicker } from "antd";
 
 import { useEffect, useRef, useState } from "react";
 import {
@@ -120,12 +120,7 @@ function AddOverTime({
 
   function authorizeManager() {
     if (!selectedEmp || !convertToISOFormat(selectedDate)) return;
-    addingOverTimeShift(
-      selectedEmp,
-      authorizedCode,
-      now,
-      convertToISOFormat(selectedDate)
-    )
+    addingOverTimeShift(selectedEmp, authorizedCode, now, selectedDate)
       .then((res) => {
         if (res.status === 200) {
           onSuccess();
@@ -257,13 +252,27 @@ function AddOverTime({
         <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
           {/* <input type="date" className="input-text" id="date" />
           <input type="time" className="input-text" id="time" /> */}
-          <DatePicker
+          <TimePicker
             className="input-text"
-            format="DD-MM-YYYY HH:mm"
-            disabledDate={disabledDate}
-            disabledTime={disabledDateTime}
-            onChange={(date, dateString) => setSelectedDate(dateString)}
-            showTime={{ defaultValue: dayjs("00:00:00", "HH:mm") }}
+            onChange={(time, timeString) => setSelectedDate(timeString)}
+            defaultOpenValue={dayjs("00:00", "HH:mm")}
+            format="HH:mm"
+            disabledTime={() => {
+              const now = dayjs();
+              const currentHour = now.hour();
+              const currentMinute = now.minute();
+
+              return {
+                disabledHours: () =>
+                  Array.from({ length: currentHour }, (_, i) => i),
+                disabledMinutes: (selectedHour) => {
+                  if (selectedHour === currentHour) {
+                    return Array.from({ length: currentMinute }, (_, i) => i);
+                  }
+                  return [];
+                },
+              };
+            }}
           />
         </div>
 
