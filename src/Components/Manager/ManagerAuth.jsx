@@ -61,11 +61,11 @@ function ManagerAuth({
 
   function authorizeManager() {
     if (!nfc) return;
-    const decodedNfc = parseHashedAttendance(String(nfc));
-    checkManager(decodedNfc)
+    // const decodedNfc = parseHashedAttendance(String(nfc));
+    checkManager(nfc)
       .then((res) => {
         if (res.status === 200) {
-          setAuthorizedCode && setAuthorizedCode(decodedNfc);
+          setAuthorizedCode && setAuthorizedCode(nfc);
           onSuccess();
         } else {
           setShowError(true);

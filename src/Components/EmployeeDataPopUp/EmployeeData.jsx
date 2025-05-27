@@ -363,7 +363,8 @@ function EmployeeData({
                       readOnly // Prevents React warnings about uncontrolled inputs
                     />
                     <p style={{ width: "fit-content" }}>
-                      {shift?.shiftName} ({shift?.shiftLable})
+                      {shift?.shiftName}{" "}
+                      {shift?.shiftLable && shift?.shiftLable}
                     </p>
                   </div>
                 ))}
