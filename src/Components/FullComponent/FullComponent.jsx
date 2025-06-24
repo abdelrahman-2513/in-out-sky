@@ -237,7 +237,8 @@ function FullComponent({
     setLanguage("en");
   }
   const direction = language === "ar" ? "rtl" : "ltr";
-  return allowedDevice ? (
+  //hard coding dissabling the device fingerprint
+  return true ? (
     <div className="main-container" style={{ direction }}>
       <Header reset={reset} language={language} setLanguage={setLanguage} />
       <DateComponent language={language} />
