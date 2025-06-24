@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonsComponent from "../ButtonsComponent/ButtonsComponent";
 import DateComponent from "../DateComponent/DateComponent";
 import DepartmentComponent from "../DepartmentComponent/DepartmentComponent";
@@ -7,7 +7,21 @@ import Header from "../Header/Header";
 import TransactionsComponent from "../TransactionsComponent/TransactionsComponent";
 import LocationChecker from "../LocationComponent/LocationComponent";
 import "./FullComponent.css";
+import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import NotAllowedDevice from "./NotAllowedDevice";
+const idsIndexing = {
+  myLocal: "addfb76f8f80dafc82325999bba4341b",
+  myProd: "dc21b824b49bca610287155476dafd3a",
+  tablet: "87c290bb5efefd7555bea5a347294e36",
+  tablet2: "fc11bf3e1299599407786a6122c5f7da",
+};
 
+const allowedDevicesFP = [
+  idsIndexing.myLocal,
+  idsIndexing.myProd,
+  idsIndexing.tablet,
+  idsIndexing.tablet2,
+];
 function FullComponent({
   userLocation,
   setUserLocation,
@@ -18,6 +32,9 @@ function FullComponent({
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [deparment, setDepartment] = useState(null);
   const [employee, setEmployee] = useState(null);
+  const [allowedDevice, setAllowedDevice] = useState(true);
+  const [yourDevice, setYourDevice] = useState(null);
+
   console.log(userLocation, isWithinRadius);
 
   const depsTrns = {
@@ -185,6 +202,34 @@ function FullComponent({
     },
   };
 
+  //checking device fingerprint
+  useEffect(() => {
+    const loadFingerprint = async () => {
+      const storedId = localStorage.getItem("stableDeviceId");
+
+      if (storedId) {
+        console.log("📌 Loaded stored fingerprint:", storedId);
+        setYourDevice(storedId);
+        setAllowedDevice(allowedDevicesFP.includes(storedId));
+        return;
+      }
+
+      const fp = await FingerprintJS.load();
+      const result = await fp.get({ extendedResult: true });
+      const visitorId = result.visitorId;
+
+      console.log("🧠 New fingerprint details:", result.components);
+      console.log("🧠 Your device fingerprint:", visitorId);
+
+      // Save it the first time
+      localStorage.setItem("stableDeviceId", visitorId);
+      setYourDevice(visitorId);
+      setAllowedDevice(allowedDevicesFP.includes(visitorId));
+    };
+
+    loadFingerprint();
+  }, []);
+
   function reset() {
     setEmployee(null);
     setDepartment(null);
@@ -192,7 +237,7 @@ function FullComponent({
     setLanguage("en");
   }
   const direction = language === "ar" ? "rtl" : "ltr";
-  return (
+  return allowedDevice ? (
     <div className="main-container" style={{ direction }}>
       <Header reset={reset} language={language} setLanguage={setLanguage} />
       <DateComponent language={language} />
@@ -233,57 +278,61 @@ function FullComponent({
         />
       )}
     </div>
+  ) : (
+    <div className="main-container" style={{ direction }}>
+      <NotAllowedDevice visitorId={yourDevice} />
+    </div>
   );
-
-  //Location Check
-  // return (
-  //   <div className="main-container" style={{ direction }}>
-  //     <Header reset={reset} language={language} setLanguage={setLanguage} />
-  //     <DateComponent language={language} />
-  //     {/* <WelcomeComponent language={language} /> */}
-  //     {userLocation && isWithinRadius ? (
-  //       employee ? (
-  //         <ButtonsComponent
-  //           selectedTransaction={selectedTransaction}
-  //           employee={employee}
-  //           language={language}
-  //           reset={reset}
-  //           depsTrns={depsTrns}
-  //           jobsTrns={jobsTrns}
-  //         />
-  //       ) : deparment ? (
-  //         <EmployeeList
-  //           setEmployee={setEmployee}
-  //           language={language}
-  //           department={deparment}
-  //           reset={reset}
-  //           transaction={selectedTransaction}
-  //         />
-  //       ) : !selectedTransaction ? (
-  //         <TransactionsComponent
-  //           setSelectedTransaction={setSelectedTransaction}
-  //           language={language}
-  //           depsTrns={depsTrns}
-  //         />
-  //       ) : (
-  //         <DepartmentComponent
-  //           language={language}
-  //           setDeratment={setDepartment}
-  //           reset={reset}
-  //           depsTrns={depsTrns}
-  //         />
-  //       )
-  //     ) : (
-  //       <LocationChecker
-  //         setUserLocation={setUserLocation}
-  //         language={language}
-  //         userLocation={userLocation}
-  //         setIsWithinRadius={setIsWithinRadius}
-  //         isWithinRadius={isWithinRadius}
-  //       />
-  //     )}
-  //   </div>
-  // );
 }
 
 export default FullComponent;
+
+//Location Check
+// return (
+//   <div className="main-container" style={{ direction }}>
+//     <Header reset={reset} language={language} setLanguage={setLanguage} />
+//     <DateComponent language={language} />
+//     {/* <WelcomeComponent language={language} /> */}
+//     {userLocation && isWithinRadius ? (
+//       employee ? (
+//         <ButtonsComponent
+//           selectedTransaction={selectedTransaction}
+//           employee={employee}
+//           language={language}
+//           reset={reset}
+//           depsTrns={depsTrns}
+//           jobsTrns={jobsTrns}
+//         />
+//       ) : deparment ? (
+//         <EmployeeList
+//           setEmployee={setEmployee}
+//           language={language}
+//           department={deparment}
+//           reset={reset}
+//           transaction={selectedTransaction}
+//         />
+//       ) : !selectedTransaction ? (
+//         <TransactionsComponent
+//           setSelectedTransaction={setSelectedTransaction}
+//           language={language}
+//           depsTrns={depsTrns}
+//         />
+//       ) : (
+//         <DepartmentComponent
+//           language={language}
+//           setDeratment={setDepartment}
+//           reset={reset}
+//           depsTrns={depsTrns}
+//         />
+//       )
+//     ) : (
+//       <LocationChecker
+//         setUserLocation={setUserLocation}
+//         language={language}
+//         userLocation={userLocation}
+//         setIsWithinRadius={setIsWithinRadius}
+//         isWithinRadius={isWithinRadius}
+//       />
+//     )}
+//   </div>
+// );

@@ -1,7 +1,10 @@
 .main-container {
+  height: 100dvh; /* Use dynamic viewport height */
+  box-sizing: border-box;
+  padding: 20px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  width: 100%;
-  padding: 20px;
+  overflow: auto; /* Prevent scroll if needed */
 }
